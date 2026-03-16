@@ -1,12 +1,15 @@
 <?php
-// Proměnné dostupné z index.php:
-// $projectId    string
-// $currentFont  string|null
-// $fonts        array
-// $fontsJson    string
-// $baseUrl      string
-// $isMock       bool
+// Variables injected from public/index.php:
+//   $projectId       string
+//   $currentSettings array  – see ShoptetApi::getCurrentSettings()
+//   $fontsJson       string  – JSON array of {name, category}
+//   $defaultHSizes   array   – ['h1'=>'2.25rem', ...]
+//   $baseUrl         string
+//   $isMock          bool
 declare(strict_types=1);
+
+$body     = $currentSettings['body']     ?? [];
+$headings = $currentSettings['headings'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="cs">
@@ -25,59 +28,148 @@ declare(strict_types=1);
       <span class="mock-badge">MOCK</span>
     <?php endif; ?>
   </h1>
-  <p>Vyberte písmo z Google Fonts, které se použije v celém eshopu.</p>
+  <p>Nastavte písmo pro tělo stránky a nadpisy. Uloží se přes Shoptet API jako CSS injekce.</p>
 </div>
 
-<?php if ($currentFont): ?>
-<div class="current-font-banner" id="current-font-banner">
-  <div class="dot"></div>
-  <span id="current-font-label">Aktivní písmo: <?= htmlspecialchars($currentFont) ?></span>
-</div>
-<?php else: ?>
-<div class="current-font-banner" id="current-font-banner" style="display:none">
-  <div class="dot"></div>
-  <span id="current-font-label"></span>
-</div>
-<?php endif; ?>
-
-<div class="card">
-  <div class="search-row">
-    <input type="text" id="font-search" placeholder="Hledat písmo…" autocomplete="off">
+<!-- ── Body text section ───────────────────────────── -->
+<div class="card" id="section-body">
+  <div class="section-title">
+    <span class="section-icon">¶</span> Tělo stránky
   </div>
 
-  <div class="filter-row" id="filter-row">
-    <!-- Vyplní admin.js -->
-  </div>
-
-  <div class="font-list" id="font-list">
-    <!-- Vyplní admin.js -->
-  </div>
-
-  <div class="preview-section">
-    <label>Náhled</label>
-    <div class="preview-box" id="preview-box">
-      <h3><?= $currentFont ? htmlspecialchars($currentFont) : 'Žádný font nevybrán' ?></h3>
-      <p>Příklad textu • Sample text 123</p>
+  <div class="field-row">
+    <label class="field-label">Písmo</label>
+    <div class="font-combobox" id="body-combobox">
+      <div class="combobox-inner">
+        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo…"
+               autocomplete="off" spellcheck="false"
+               value="<?= htmlspecialchars($body['family'] ?? '') ?>">
+        <button type="button" class="combobox-clear" title="Odebrat"
+                style="<?= empty($body['family']) ? 'display:none' : '' ?>">✕</button>
+      </div>
+      <div class="font-dropdown"></div>
     </div>
   </div>
 
-  <div class="actions">
-    <button class="btn btn-primary" id="save-btn">Uložit nastavení</button>
-    <?php if ($currentFont): ?>
-      <button class="btn btn-ghost" id="clear-btn">Odebrat písmo</button>
-    <?php else: ?>
-      <button class="btn btn-ghost" id="clear-btn" style="display:none">Odebrat písmo</button>
-    <?php endif; ?>
+  <div class="field-row two-col">
+    <div>
+      <label class="field-label">Tloušťka (weight)</label>
+      <select class="field-select" id="body-weight">
+        <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
+          <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> – <?= $label ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+    <div>
+      <label class="field-label">Velikost písma</label>
+      <input type="text" class="field-input" id="body-size"
+             placeholder="např. 16px, 1rem"
+             value="<?= htmlspecialchars($body['size'] ?? '') ?>">
+    </div>
   </div>
+
+  <div class="field-row">
+    <label class="field-label">
+      Vlastní selektory
+      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
+    </label>
+    <input type="text" class="field-input" id="body-selectors"
+           placeholder=".product-name, #description, .custom-text"
+           value="<?= htmlspecialchars($body['extraSelectors'] ?? '') ?>">
+  </div>
+
+  <div class="preview-section">
+    <label class="field-label">Náhled</label>
+    <div class="preview-box" id="body-preview">
+      <p>Toto je ukázkový text těla stránky. This is a sample body text.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Headings section ────────────────────────────── -->
+<div class="card" id="section-headings">
+  <div class="section-title">
+    <span class="section-icon">H</span> Nadpisy
+  </div>
+
+  <div class="field-row">
+    <label class="field-label">Písmo</label>
+    <div class="font-combobox" id="headings-combobox">
+      <div class="combobox-inner">
+        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo…"
+               autocomplete="off" spellcheck="false"
+               value="<?= htmlspecialchars($headings['family'] ?? '') ?>">
+        <button type="button" class="combobox-clear" title="Odebrat"
+                style="<?= empty($headings['family']) ? 'display:none' : '' ?>">✕</button>
+      </div>
+      <div class="font-dropdown"></div>
+    </div>
+  </div>
+
+  <div class="field-row two-col">
+    <div>
+      <label class="field-label">Tloušťka (weight)</label>
+      <select class="field-select" id="headings-weight">
+        <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
+          <option value="<?= $w ?>" <?= ($headings['weight'] ?? '700') == $w ? 'selected' : '' ?>><?= $w ?> – <?= $label ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+    <div><!-- spacer --></div>
+  </div>
+
+  <div class="field-row">
+    <label class="field-label">
+      Vlastní selektory
+      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
+    </label>
+    <input type="text" class="field-input" id="headings-selectors"
+           placeholder=".hero-title, .page-title"
+           value="<?= htmlspecialchars($headings['extraSelectors'] ?? '') ?>">
+  </div>
+
+  <div class="field-row">
+    <label class="field-label">Velikost pro každý nadpis</label>
+    <div class="heading-sizes-grid">
+      <?php foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
+        $val = $headings['sizes'][$tag] ?? $defaultHSizes[$tag]; ?>
+        <div class="heading-size-item">
+          <span class="heading-size-label"><?= strtoupper($tag) ?></span>
+          <input type="text" class="heading-size-input"
+                 data-tag="<?= $tag ?>"
+                 placeholder="<?= $defaultHSizes[$tag] ?>"
+                 value="<?= htmlspecialchars($val) ?>">
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+
+  <div class="preview-section">
+    <label class="field-label">Náhled</label>
+    <div class="preview-box" id="headings-preview">
+      <?php foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
+        $sz = $headings['sizes'][$tag] ?? $defaultHSizes[$tag]; ?>
+        <<?= $tag ?> style="font-size:<?= htmlspecialchars($sz) ?>;margin:0 0 4px"><?= strtoupper($tag) ?> – Ukázkový nadpis</<?= $tag ?>>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</div>
+
+<!-- ── Actions ─────────────────────────────────────── -->
+<div class="actions-bar">
+  <button class="btn btn-primary" id="save-btn">Uložit nastavení</button>
+  <button class="btn btn-ghost" id="clear-btn">Odebrat vše</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  window.FONTS_DATA   = <?= $fontsJson ?>;
-  window.CURRENT_FONT = <?= $currentFont ? json_encode($currentFont) : 'null' ?>;
-  window.PROJECT_ID   = <?= json_encode($projectId) ?>;
-  window.API_SAVE_URL = <?= json_encode($baseUrl . '/api/save') ?>;
+  window.FONTS_DATA        = <?= $fontsJson ?>;
+  window.CURRENT_SETTINGS  = <?= json_encode($currentSettings, JSON_UNESCAPED_UNICODE) ?>;
+  window.DEFAULT_H_SIZES   = <?= json_encode($defaultHSizes) ?>;
+  window.PROJECT_ID        = <?= json_encode($projectId) ?>;
+  window.API_SAVE_URL      = <?= json_encode($baseUrl . '/api/save') ?>;
 </script>
 <script src="<?= htmlspecialchars($baseUrl) ?>/assets/admin.js"></script>
 

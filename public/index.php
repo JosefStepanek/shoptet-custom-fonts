@@ -13,15 +13,14 @@ use CustomFonts\GoogleFonts;
 Config::load();
 
 // Simple router based on REQUEST_URI
-$requestUri  = $_SERVER['REQUEST_URI'] ?? '/';
-$scriptName  = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
-$basePath    = rtrim(dirname($scriptName), '/');
-$path        = '/' . ltrim(substr($requestUri, strlen($basePath)), '/');
-$path        = strtok($path, '?'); // strip query string
+$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
+$basePath   = rtrim(dirname($scriptName), '/');
+$path       = '/' . ltrim(substr($requestUri, strlen($basePath)), '/');
+$path       = strtok($path, '?'); // strip query string
 
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 
-// Hlavičky pro iframe
 header('X-Content-Type-Options: nosniff');
 
 // ─────────────────────────────────────────────────────────────
@@ -73,32 +72,32 @@ if ($path === '/admin' && $method === 'GET') {
         exit;
     }
 
-    // Fetch the currently active font family
+    // Fetch the currently active font settings
     try {
-        $api         = new ShoptetApi($projectId);
-        $currentFont = $api->getCurrentFontFamily();
+        $api             = new ShoptetApi($projectId);
+        $currentSettings = $api->getCurrentSettings();
     } catch (Throwable $e) {
-        $currentFont = null;
+        $currentSettings = [];
     }
 
-    $fonts    = GoogleFonts::getList();
-    $fontsJson = GoogleFonts::getListJson();
-    $baseUrl  = Config::baseUrl();
-    $isMock   = Config::isMockMode();
+    $fontsJson        = GoogleFonts::getListJson();
+    $defaultHSizes    = ShoptetApi::DEFAULT_HEADING_SIZES;
+    $baseUrl          = Config::baseUrl();
+    $isMock           = Config::isMockMode();
 
     include dirname(__DIR__) . '/templates/admin.php';
     exit;
 }
 
 // ─────────────────────────────────────────────────────────────
-// POST /api/save  – save font selection from admin UI
+// POST /api/save  – save font settings from admin UI
 // ─────────────────────────────────────────────────────────────
 if ($path === '/api/save' && $method === 'POST') {
     header('Content-Type: application/json');
 
     $body      = json_decode(file_get_contents('php://input'), true) ?? [];
     $projectId = trim($body['project_id'] ?? '');
-    $fontFamily = trim($body['font_family'] ?? '');
+    $settings  = $body['settings'] ?? [];
 
     if (Config::isMockMode() && empty($projectId)) {
         $projectId = 'mock-eshop';
@@ -113,25 +112,37 @@ if ($path === '/api/save' && $method === 'POST') {
     try {
         $api = new ShoptetApi($projectId);
 
-        if ($fontFamily === '' || $fontFamily === 'none') {
-            $api->clearFont();
-            echo json_encode(['status' => 'ok', 'font' => null]);
-        } else {
-            // Validate against allowlist to prevent injection
-            $allowed = array_column(GoogleFonts::getList(), 'name');
-            if (!in_array($fontFamily, $allowed, true)) {
-                http_response_code(400);
-                echo json_encode(['error' => 'Invalid font family']);
-                exit;
-            }
+        // If both families are empty, clear entirely
+        $bodyFamily    = trim($settings['body']['family'] ?? '');
+        $headingFamily = trim($settings['headings']['family'] ?? '');
 
-            $api->setGoogleFont($fontFamily);
-            echo json_encode(['status' => 'ok', 'font' => $fontFamily]);
+        if ($bodyFamily === '' && $headingFamily === '') {
+            $api->clearFonts();
+            echo json_encode(['status' => 'ok', 'cleared' => true]);
+            exit;
         }
+
+        // Validate font families against the allowlist
+        $allowed = array_column(GoogleFonts::getList(), 'name');
+
+        if ($bodyFamily !== '' && !\in_array($bodyFamily, $allowed, true)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid body font family']);
+            exit;
+        }
+        if ($headingFamily !== '' && !\in_array($headingFamily, $allowed, true)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid headings font family']);
+            exit;
+        }
+
+        $api->setFonts($settings);
+        echo json_encode(['status' => 'ok', 'settings' => $settings]);
+
     } catch (Throwable $e) {
         error_log('[custom-fonts] Save error: ' . $e->getMessage());
         http_response_code(500);
-        echo json_encode(['error' => 'Failed to save font']);
+        echo json_encode(['error' => 'Failed to save font settings']);
     }
     exit;
 }
