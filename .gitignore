@@ -3,7 +3,7 @@ vendor/
 tokens/*.json
 *.log
 
-# Uploaded fonts (pokud přibyde upload)
+# Uploaded fonts (if upload feature is added later)
 public/fonts/*/
 
 # IDE
