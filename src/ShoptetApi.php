@@ -158,21 +158,27 @@ class ShoptetApi
 
         // Headings CSS
         if ($headingFamily) {
-            $h        = $settings['headings'] ?? [];
-            $weight   = $h['weight'] ?? '700';
-            $extraSel = $this->sanitizeSelectors($h['extraSelectors'] ?? '');
+            $h           = $settings['headings'] ?? [];
+            $globalWeight = $h['weight'] ?? '700';
+            $extraSel    = $this->sanitizeSelectors($h['extraSelectors'] ?? '');
 
             $baseSel   = 'h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6';
             $selectors = $extraSel ? "{$baseSel},{$extraSel}" : $baseSel;
 
-            $css = "{$selectors}{font-family:'{$headingFamily}',sans-serif!important;font-weight:{$weight}!important;}";
+            // Base rule: font-family + default weight for all headings
+            $css = "{$selectors}{font-family:'{$headingFamily}',sans-serif!important;font-weight:{$globalWeight}!important;}";
 
-            // Per-heading font sizes
-            $sizes = $h['sizes'] ?? [];
+            // Per-heading overrides: size and/or weight
+            $sizes   = $h['sizes']   ?? [];
+            $weights = $h['weights'] ?? [];
             foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
-                $sz = trim($sizes[$tag] ?? '');
-                if ($sz !== '') {
-                    $css .= "{$tag},.{$tag}{{font-size:{$sz}!important;}}";
+                $sz = trim($sizes[$tag]   ?? '');
+                $wt = trim($weights[$tag] ?? '');
+                if ($sz !== '' || $wt !== '') {
+                    $props = '';
+                    if ($sz !== '') $props .= "font-size:{$sz}!important;";
+                    if ($wt !== '') $props .= "font-weight:{$wt}!important;";
+                    $css .= "{$tag},.{$tag}{{$props}}";
                 }
             }
 

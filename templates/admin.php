@@ -109,7 +109,10 @@ $headings = $currentSettings['headings'] ?? [];
 
   <div class="field-row two-col">
     <div>
-      <label class="field-label">Tloušťka (weight)</label>
+      <label class="field-label">
+        Výchozí tloušťka
+        <span class="field-hint">platí pro všechna H, pokud není přepsána níže</span>
+      </label>
       <select class="field-select" id="headings-weight">
         <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
           <option value="<?= $w ?>" <?= ($headings['weight'] ?? '700') == $w ? 'selected' : '' ?>><?= $w ?> – <?= $label ?></option>
@@ -130,19 +133,38 @@ $headings = $currentSettings['headings'] ?? [];
   </div>
 
   <div class="field-row">
-    <label class="field-label">Velikost pro každý nadpis</label>
-    <div class="heading-sizes-grid">
-      <?php foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
-        $val = $headings['sizes'][$tag] ?? $defaultHSizes[$tag]; ?>
-        <div class="heading-size-item">
-          <span class="heading-size-label"><?= strtoupper($tag) ?></span>
+    <label class="field-label">
+      Velikost a tloušťka pro každý nadpis
+      <span class="field-hint">přepíše výchozí hodnoty</span>
+    </label>
+    <?php
+    $weightOptions = [100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',
+                      500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'];
+    foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
+      $sz = $headings['sizes'][$tag]   ?? $defaultHSizes[$tag];
+      $wt = $headings['weights'][$tag] ?? ($headings['weight'] ?? '700');
+    ?>
+      <div class="heading-row">
+        <span class="heading-row-label"><?= strtoupper($tag) ?></span>
+
+        <div class="heading-row-field">
+          <span class="heading-row-sublabel">Velikost</span>
           <input type="text" class="heading-size-input"
                  data-tag="<?= $tag ?>"
                  placeholder="<?= $defaultHSizes[$tag] ?>"
-                 value="<?= htmlspecialchars($val) ?>">
+                 value="<?= htmlspecialchars($sz) ?>">
         </div>
-      <?php endforeach; ?>
-    </div>
+
+        <div class="heading-row-field">
+          <span class="heading-row-sublabel">Weight</span>
+          <select class="heading-weight-select" data-tag="<?= $tag ?>">
+            <?php foreach ($weightOptions as $w => $wLabel): ?>
+              <option value="<?= $w ?>" <?= $wt == $w ? 'selected' : '' ?>><?= $w ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      </div>
+    <?php endforeach; ?>
   </div>
 
   <div class="preview-section">

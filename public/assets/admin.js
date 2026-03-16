@@ -195,12 +195,22 @@
     if (el) el.style.fontSize = size || DEF_SIZES[tag] || '';
   }
 
+  function applyHeadingWeightPreview(tag, weight) {
+    const box = document.getElementById('headings-preview');
+    if (!box) return;
+    const el = box.querySelector(tag);
+    if (el) el.style.fontWeight = weight || '';
+  }
+
   // ── Collect current form values ───────────────────────────
 
   function collectSettings() {
-    const sizes = {};
+    const sizes = {}, weights = {};
     document.querySelectorAll('.heading-size-input').forEach(inp => {
       sizes[inp.dataset.tag] = inp.value.trim();
+    });
+    document.querySelectorAll('.heading-weight-select').forEach(sel => {
+      weights[sel.dataset.tag] = sel.value;
     });
 
     return {
@@ -215,6 +225,7 @@
         weight:         document.getElementById('headings-weight').value,
         extraSelectors: document.getElementById('headings-selectors').value.trim(),
         sizes,
+        weights,
       },
     };
   }
@@ -308,6 +319,14 @@
     applyBodyPreview(body.family, body.weight, body.size);
     applyHeadingsPreview(headings.family, headings.weight);
 
+    // Apply per-heading weights from saved settings
+    if (headings.weights) {
+      document.querySelectorAll('.heading-weight-select').forEach(sel => {
+        const saved = headings.weights[sel.dataset.tag];
+        if (saved) applyHeadingWeightPreview(sel.dataset.tag, saved);
+      });
+    }
+
     // Live preview – body weight / size
     document.getElementById('body-weight').addEventListener('change', () =>
       applyBodyPreview(
@@ -334,6 +353,22 @@
     document.querySelectorAll('.heading-size-input').forEach(inp => {
       inp.addEventListener('input', () =>
         applyHeadingSizePreview(inp.dataset.tag, inp.value.trim()));
+    });
+
+    // Live preview – per-heading weights
+    document.querySelectorAll('.heading-weight-select').forEach(sel => {
+      sel.addEventListener('change', () =>
+        applyHeadingWeightPreview(sel.dataset.tag, sel.value));
+    });
+
+    // When global headings weight changes, update preview for headings without per-H override
+    document.getElementById('headings-weight').addEventListener('change', () => {
+      const globalW = document.getElementById('headings-weight').value;
+      applyHeadingsPreview(headingsCombobox.getValue(), globalW);
+      // Per-H weight selects override their own element
+      document.querySelectorAll('.heading-weight-select').forEach(sel => {
+        applyHeadingWeightPreview(sel.dataset.tag, sel.value || globalW);
+      });
     });
 
     // Action buttons
