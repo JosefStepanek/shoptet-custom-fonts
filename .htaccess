@@ -1,4 +1,11 @@
-# If DocumentRoot points to the project root, redirect all requests into public/
 RewriteEngine On
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ public/$1 [L]
+
+# Block direct HTTP access to sensitive directories
+RewriteRule ^(src|templates|tokens|vendor)(/.*)?$ - [F,L]
+
+# Serve existing files and directories directly (assets, composer files, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route everything else through index.php
+RewriteRule ^ index.php [QSA,L]

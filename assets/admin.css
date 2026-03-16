@@ -1,16 +1,16 @@
-/* Shoptet Custom Fonts – Admin UI */
+/* Shoptet Custom Fonts - Admin UI */
 :root {
-  --color-primary:    #2563eb;
-  --color-primary-h:  #1d4ed8;
-  --color-success:    #16a34a;
-  --color-danger:     #dc2626;
-  --color-border:     #e2e8f0;
-  --color-bg:         #f8fafc;
-  --color-bg-card:    #ffffff;
-  --color-text:       #1e293b;
-  --color-muted:      #64748b;
-  --radius:           8px;
-  --shadow:           0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --color-primary:   #2563eb;
+  --color-primary-h: #1d4ed8;
+  --color-success:   #16a34a;
+  --color-danger:    #dc2626;
+  --color-border:    #e2e8f0;
+  --color-bg:        #f8fafc;
+  --color-card:      #ffffff;
+  --color-text:      #1e293b;
+  --color-muted:     #64748b;
+  --radius:          8px;
+  --shadow:          0 1px 3px rgba(0,0,0,.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,24 +20,15 @@ body {
   font-size: 14px;
   color: var(--color-text);
   background: var(--color-bg);
-  padding: 24px;
+  padding: 20px;
   line-height: 1.5;
 }
 
-/* ── Hlavička ─────────────────────────────────────── */
-.header {
-  margin-bottom: 24px;
-}
-.header h1 {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--color-text);
-}
-.header p {
-  color: var(--color-muted);
-  margin-top: 4px;
-  font-size: 13px;
-}
+/* -- Header ----------------------------------------- */
+.header { margin-bottom: 20px; }
+.header h1 { font-size: 20px; font-weight: 600; }
+.header p  { color: var(--color-muted); font-size: 13px; margin-top: 4px; }
+
 .mock-badge {
   display: inline-block;
   background: #fef3c7;
@@ -50,144 +41,257 @@ body {
   vertical-align: middle;
 }
 
-/* ── Karta ────────────────────────────────────────── */
+/* -- Cards ------------------------------------------ */
 .card {
-  background: var(--color-bg-card);
+  background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 20px;
-  margin-bottom: 20px;
-}
-
-/* ── Hledání ──────────────────────────────────────── */
-.search-row {
-  display: flex;
-  gap: 8px;
   margin-bottom: 16px;
 }
-.search-row input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  font-size: 14px;
-  outline: none;
-  transition: border-color .15s;
-}
-.search-row input:focus {
-  border-color: var(--color-primary);
-}
 
-/* ── Filter kategorie ─────────────────────────────── */
-.filter-row {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-.filter-btn {
-  padding: 4px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 99px;
-  background: transparent;
-  font-size: 12px;
-  cursor: pointer;
-  color: var(--color-muted);
-  transition: all .15s;
-}
-.filter-btn:hover, .filter-btn.active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: #fff;
-}
-
-/* ── Seznam fontů ─────────────────────────────────── */
-.font-list {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  max-height: 320px;
-  overflow-y: auto;
-}
-.font-item {
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
-  padding: 10px 14px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--color-border);
-  transition: background .1s;
+  gap: 8px;
+}
+.section-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* -- Fields ----------------------------------------- */
+.field-row {
+  margin-bottom: 14px;
+}
+.field-row.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-.font-item:last-child { border-bottom: none; }
-.font-item:hover      { background: #f1f5f9; }
-.font-item.selected   { background: #eff6ff; }
 
-.font-item input[type="radio"] {
-  flex-shrink: 0;
-  accent-color: var(--color-primary);
-  width: 16px; height: 16px;
-}
-.font-meta {
-  flex: 1;
-  min-width: 0;
-}
-.font-name {
-  font-weight: 500;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.font-category {
-  font-size: 11px;
-  color: var(--color-muted);
-  text-transform: capitalize;
-}
-.font-preview {
-  font-size: 18px;
-  color: var(--color-text);
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity .3s;
-}
-.font-preview.loaded { opacity: 1; }
-
-.font-empty {
-  padding: 24px;
-  text-align: center;
-  color: var(--color-muted);
-}
-
-/* ── Náhled ───────────────────────────────────────── */
-.preview-section {
-  margin-top: 16px;
-}
-.preview-section label {
+.field-label {
   display: block;
   font-size: 12px;
   font-weight: 600;
   color: var(--color-muted);
   text-transform: uppercase;
-  letter-spacing: .05em;
-  margin-bottom: 8px;
+  letter-spacing: .04em;
+  margin-bottom: 6px;
 }
+.field-hint {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 4px;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+.field-hint code {
+  background: #f1f5f9;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.field-input,
+.field-select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--color-text);
+  background: #fff;
+  outline: none;
+  transition: border-color .15s;
+}
+.field-input:focus,
+.field-select:focus { border-color: var(--color-primary); }
+
+/* -- Font combobox ---------------------------------- */
+.font-combobox { position: relative; }
+
+.combobox-inner {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: #fff;
+  transition: border-color .15s;
+}
+.combobox-inner:focus-within { border-color: var(--color-primary); }
+
+.font-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 7px 10px;
+  font-size: 13px;
+  background: transparent;
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.combobox-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 10px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1;
+  transition: color .15s;
+}
+.combobox-clear:hover { color: var(--color-danger); }
+
+/* -- Dropdown --------------------------------------- */
+.font-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.fdrop-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-border);
+  transition: background .1s;
+}
+.fdrop-item:last-child   { border-bottom: none; }
+.fdrop-item:hover,
+.fdrop-item.is-active    { background: #f1f5f9; }
+.fdrop-item.is-selected  { background: #eff6ff; }
+
+.fdrop-name {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+  transition: font-family .3s;
+}
+.fdrop-cat {
+  font-size: 11px;
+  color: var(--color-muted);
+  text-transform: capitalize;
+  flex-shrink: 0;
+}
+.fdrop-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+/* -- Per-heading rows ------------------------------- */
+.heading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.heading-row:last-child { border-bottom: none; }
+
+.heading-row-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-muted);
+  width: 26px;
+  flex-shrink: 0;
+}
+
+.heading-row-field {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.heading-row-sublabel {
+  font-size: 11px;
+  color: var(--color-muted);
+  flex-shrink: 0;
+  width: 44px;
+}
+
+.heading-size-input {
+  flex: 1;
+  padding: 5px 7px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 12px;
+  outline: none;
+  min-width: 0;
+  transition: border-color .15s;
+}
+.heading-size-input:focus { border-color: var(--color-primary); }
+
+.heading-weight-select {
+  flex: 1;
+  padding: 5px 6px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 12px;
+  outline: none;
+  min-width: 0;
+  background: #fff;
+  transition: border-color .15s;
+}
+.heading-weight-select:focus { border-color: var(--color-primary); }
+
+/* -- Preview box ------------------------------------ */
+.preview-section { margin-top: 16px; }
+
 .preview-box {
   border: 1px dashed var(--color-border);
   border-radius: var(--radius);
-  padding: 16px;
-  min-height: 80px;
-  transition: font-family .3s;
+  padding: 14px 16px;
+  transition: font-family .3s, font-weight .2s, font-size .2s;
+  line-height: 1.5;
 }
-.preview-box h3 { font-size: 22px; margin-bottom: 6px; }
-.preview-box p  { font-size: 15px; color: var(--color-muted); }
+.preview-box h1, .preview-box h2,
+.preview-box h3, .preview-box h4,
+.preview-box h5, .preview-box h6 {
+  margin: 0 0 3px;
+  line-height: 1.3;
+  transition: font-family .3s, font-weight .2s, font-size .2s;
+}
 
-/* ── Akce ─────────────────────────────────────────── */
-.actions {
+/* -- Actions bar ------------------------------------ */
+.actions-bar {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 4px;
+  margin-bottom: 24px;
 }
 .btn {
   padding: 9px 20px;
@@ -213,42 +317,23 @@ body {
 }
 .btn-ghost:hover:not(:disabled) { background: #f1f5f9; }
 
-/* ── Toast notifikace ─────────────────────────────── */
+/* -- Toast ------------------------------------------ */
 .toast {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 12px 18px;
+  bottom: 20px;
+  right: 20px;
+  padding: 11px 16px;
   border-radius: var(--radius);
   font-size: 14px;
   font-weight: 500;
   color: #fff;
   box-shadow: 0 4px 12px rgba(0,0,0,.15);
-  transform: translateY(8px);
+  transform: translateY(6px);
   opacity: 0;
   transition: all .25s;
   z-index: 9999;
   pointer-events: none;
 }
-.toast.show { opacity: 1; transform: translateY(0); }
+.toast.show    { opacity: 1; transform: translateY(0); }
 .toast.success { background: var(--color-success); }
 .toast.error   { background: var(--color-danger); }
-
-/* ── Aktuální font banner ─────────────────────────── */
-.current-font-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  border-radius: var(--radius);
-  padding: 10px 14px;
-  margin-bottom: 16px;
-  font-size: 13px;
-}
-.current-font-banner .dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  flex-shrink: 0;
-}

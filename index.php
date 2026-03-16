@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 // Bootstrap
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use CustomFonts\Config;
 use CustomFonts\OAuth;
@@ -85,7 +85,7 @@ if ($path === '/admin' && $method === 'GET') {
     $baseUrl          = Config::baseUrl();
     $isMock           = Config::isMockMode();
 
-    include dirname(__DIR__) . '/templates/admin.php';
+    include __DIR__ . '/templates/admin.php';
     exit;
 }
 
