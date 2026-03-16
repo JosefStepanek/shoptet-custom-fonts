@@ -7,9 +7,9 @@ namespace CustomFonts;
 /**
  * Wrapper around the Shoptet /api/template-include endpoint.
  *
- * GET    /api/template-include            → list currently injected HTML codes
- * POST   /api/template-include            → create/overwrite code for a location
- * DELETE /api/template-include/{location} → remove code for a location
+ * GET    /api/template-include            => list currently injected HTML codes
+ * POST   /api/template-include            => create/overwrite code for a location
+ * DELETE /api/template-include/{location} => remove code for a location
  *
  * Settings are stored as a JSON comment inside the injected HTML block so that
  * the full configuration can be recovered later without a separate database.

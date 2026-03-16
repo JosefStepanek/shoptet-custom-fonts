@@ -1,5 +1,5 @@
 /**
- * Shoptet Custom Fonts – Admin UI
+ * Shoptet Custom Fonts - Admin UI
  */
 (function () {
   'use strict';
@@ -10,7 +10,7 @@
 
   const loadedFonts = new Set();
 
-  // ── Font loading ──────────────────────────────────────────
+  // -- Font loading ------------------------------------------
 
   function loadFont(family) {
     if (!family || loadedFonts.has(family)) return;
@@ -22,13 +22,13 @@
     document.head.appendChild(link);
   }
 
-  // ── FontCombobox ──────────────────────────────────────────
+  // -- FontCombobox ------------------------------------------
   //
   // Wraps a .font-combobox element:
   //   <div class="font-combobox">
   //     <div class="combobox-inner">
   //       <input class="font-input">
-  //       <button class="combobox-clear">✕</button>
+  //       <button class="combobox-clear">x</button>
   //     </div>
   //     <div class="font-dropdown"></div>
   //   </div>
@@ -54,7 +54,7 @@
       this.clearBtn.style.display  = family ? '' : 'none';
     }
 
-    // ── Private ──────────────────────────────────────────────
+    // -- Private ----------------------------------------------
 
     _bindEvents() {
       this.input.addEventListener('input',   () => this._onInput());
@@ -84,7 +84,7 @@
       this.dropdown.innerHTML = '';
 
       if (!items.length) {
-        this.dropdown.innerHTML = '<div class="fdrop-empty">Žádné výsledky</div>';
+        this.dropdown.innerHTML = '<div class="fdrop-empty">No results</div>';
         this.dropdown.style.display = 'block';
         return;
       }
@@ -169,7 +169,7 @@
     }
   }
 
-  // ── Preview helpers ───────────────────────────────────────
+  // -- Preview helpers ---------------------------------------
 
   function applyBodyPreview(family, weight, size) {
     const box = document.getElementById('body-preview');
@@ -202,7 +202,7 @@
     if (el) el.style.fontWeight = weight || '';
   }
 
-  // ── Collect current form values ───────────────────────────
+  // -- Collect current form values ---------------------------
 
   function collectSettings() {
     const sizes = {}, weights = {};
@@ -230,12 +230,12 @@
     };
   }
 
-  // ── Save ──────────────────────────────────────────────────
+  // -- Save --------------------------------------------------
 
   async function onSave() {
     const btn = document.getElementById('save-btn');
     btn.disabled    = true;
-    btn.textContent = 'Ukládám…';
+    btn.textContent = 'Saving...';
 
     try {
       const res = await fetch(window.API_SAVE_URL, {
@@ -250,17 +250,17 @@
       const data = await res.json();
       if (!res.ok || data.error) throw new Error(data.error || 'Server error');
 
-      showToast('Nastavení uloženo ✓', 'success');
+      showToast('Settings saved', 'success');
     } catch (err) {
       showToast('Chyba: ' + err.message, 'error');
     } finally {
       btn.disabled    = false;
-      btn.textContent = 'Uložit nastavení';
+      btn.textContent = 'Save settings';
     }
   }
 
   async function onClear() {
-    if (!confirm('Opravdu odebrat veškeré vlastní písmo?')) return;
+    if (!confirm('Remove all custom fonts and restore defaults?')) return;
 
     bodyCombobox.setValue(null);
     headingsCombobox.setValue(null);
@@ -270,7 +270,7 @@
     await onSave();
   }
 
-  // ── Toast ─────────────────────────────────────────────────
+  // -- Toast -------------------------------------------------
 
   function showToast(msg, type) {
     const el = document.getElementById('toast');
@@ -281,7 +281,7 @@
     setTimeout(() => el.classList.remove('show'), 3000);
   }
 
-  // ── Init ──────────────────────────────────────────────────
+  // -- Init --------------------------------------------------
 
   let bodyCombobox, headingsCombobox;
 
@@ -327,7 +327,7 @@
       });
     }
 
-    // Live preview – body weight / size
+    // Live preview - body weight / size
     document.getElementById('body-weight').addEventListener('change', () =>
       applyBodyPreview(
         bodyCombobox.getValue(),
@@ -342,20 +342,20 @@
         document.getElementById('body-size').value.trim(),
       ));
 
-    // Live preview – headings weight
+    // Live preview - headings weight
     document.getElementById('headings-weight').addEventListener('change', () =>
       applyHeadingsPreview(
         headingsCombobox.getValue(),
         document.getElementById('headings-weight').value,
       ));
 
-    // Live preview – per-heading sizes
+    // Live preview - per-heading sizes
     document.querySelectorAll('.heading-size-input').forEach(inp => {
       inp.addEventListener('input', () =>
         applyHeadingSizePreview(inp.dataset.tag, inp.value.trim()));
     });
 
-    // Live preview – per-heading weights
+    // Live preview - per-heading weights
     document.querySelectorAll('.heading-weight-select').forEach(sel => {
       sel.addEventListener('change', () =>
         applyHeadingWeightPreview(sel.dataset.tag, sel.value));

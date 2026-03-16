@@ -8,14 +8,14 @@ class GoogleFonts
 {
     /**
      * Curated list of the most popular Google Fonts.
-     * Ordered: sans-serif → serif → display → monospace
+     * Ordered: sans-serif => serif => display => monospace
      *
      * @return array<array{name: string, category: string}>
      */
     public static function getList(): array
     {
         return [
-            // Sans-serif – nejpopulárnější
+            // Sans-serif - most popular
             ['name' => 'Inter',            'category' => 'sans-serif'],
             ['name' => 'Roboto',           'category' => 'sans-serif'],
             ['name' => 'Open Sans',        'category' => 'sans-serif'],
@@ -64,7 +64,7 @@ class GoogleFonts
             ['name' => 'Spectral',         'category' => 'serif'],
             ['name' => 'Cinzel',           'category' => 'serif'],
 
-            // Display / dekorativní
+            // Display / decorative
             ['name' => 'Pacifico',         'category' => 'display'],
             ['name' => 'Dancing Script',   'category' => 'display'],
             ['name' => 'Lobster',          'category' => 'display'],

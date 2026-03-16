@@ -1,4 +1,4 @@
-/* Shoptet Custom Fonts – Admin UI */
+/* Shoptet Custom Fonts - Admin UI */
 :root {
   --color-primary:   #2563eb;
   --color-primary-h: #1d4ed8;
@@ -24,7 +24,7 @@ body {
   line-height: 1.5;
 }
 
-/* ── Header ───────────────────────────────────────── */
+/* -- Header ----------------------------------------- */
 .header { margin-bottom: 20px; }
 .header h1 { font-size: 20px; font-weight: 600; }
 .header p  { color: var(--color-muted); font-size: 13px; margin-top: 4px; }
@@ -41,7 +41,7 @@ body {
   vertical-align: middle;
 }
 
-/* ── Cards ────────────────────────────────────────── */
+/* -- Cards ------------------------------------------ */
 .card {
   background: var(--color-card);
   border: 1px solid var(--color-border);
@@ -73,7 +73,7 @@ body {
   flex-shrink: 0;
 }
 
-/* ── Fields ───────────────────────────────────────── */
+/* -- Fields ----------------------------------------- */
 .field-row {
   margin-bottom: 14px;
 }
@@ -122,7 +122,7 @@ body {
 .field-input:focus,
 .field-select:focus { border-color: var(--color-primary); }
 
-/* ── Font combobox ────────────────────────────────── */
+/* -- Font combobox ---------------------------------- */
 .font-combobox { position: relative; }
 
 .combobox-inner {
@@ -158,7 +158,7 @@ body {
 }
 .combobox-clear:hover { color: var(--color-danger); }
 
-/* ── Dropdown ─────────────────────────────────────── */
+/* -- Dropdown --------------------------------------- */
 .font-dropdown {
   display: none;
   position: absolute;
@@ -210,7 +210,7 @@ body {
   font-size: 13px;
 }
 
-/* ── Per-heading rows ─────────────────────────────── */
+/* -- Per-heading rows ------------------------------- */
 .heading-row {
   display: flex;
   align-items: center;
@@ -268,7 +268,7 @@ body {
 }
 .heading-weight-select:focus { border-color: var(--color-primary); }
 
-/* ── Preview box ──────────────────────────────────── */
+/* -- Preview box ------------------------------------ */
 .preview-section { margin-top: 16px; }
 
 .preview-box {
@@ -286,7 +286,7 @@ body {
   transition: font-family .3s, font-weight .2s, font-size .2s;
 }
 
-/* ── Actions bar ──────────────────────────────────── */
+/* -- Actions bar ------------------------------------ */
 .actions-bar {
   display: flex;
   gap: 10px;
@@ -317,7 +317,7 @@ body {
 }
 .btn-ghost:hover:not(:disabled) { background: #f1f5f9; }
 
-/* ── Toast ────────────────────────────────────────── */
+/* -- Toast ------------------------------------------ */
 .toast {
   position: fixed;
   bottom: 20px;

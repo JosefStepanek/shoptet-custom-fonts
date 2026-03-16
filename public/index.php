@@ -23,9 +23,9 @@ $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 
 header('X-Content-Type-Options: nosniff');
 
-// ─────────────────────────────────────────────────────────────
-// GET /install  – called by Shoptet when the addon is installed
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// GET /install  - called by Shoptet when the addon is installed
+// -------------------------------------------------------------
 if ($path === '/install' && $method === 'GET') {
     $code     = trim($_GET['code'] ?? '');
     $eshopUrl = trim($_GET['eshop_url'] ?? '');
@@ -46,10 +46,10 @@ if ($path === '/install' && $method === 'GET') {
     exit;
 }
 
-// ─────────────────────────────────────────────────────────────
-// GET /admin  – Admin UI (rendered inside Shoptet admin iframe)
+// -------------------------------------------------------------
+// GET /admin  - Admin UI (rendered inside Shoptet admin iframe)
 // URL pattern: /admin?project_id=#PROJECT_ID#&code=#OAUTH_CODE#
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 if ($path === '/admin' && $method === 'GET') {
     $projectId = trim($_GET['project_id'] ?? '');
     $oauthCode = trim($_GET['code'] ?? '');
@@ -89,9 +89,9 @@ if ($path === '/admin' && $method === 'GET') {
     exit;
 }
 
-// ─────────────────────────────────────────────────────────────
-// POST /api/save  – save font settings from admin UI
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// POST /api/save  - save font settings from admin UI
+// -------------------------------------------------------------
 if ($path === '/api/save' && $method === 'POST') {
     header('Content-Type: application/json');
 
@@ -147,9 +147,9 @@ if ($path === '/api/save' && $method === 'POST') {
     exit;
 }
 
-// ─────────────────────────────────────────────────────────────
-// GET /health  – health check endpoint
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// GET /health  - health check endpoint
+// -------------------------------------------------------------
 if ($path === '/health' && $method === 'GET') {
     header('Content-Type: application/json');
     echo json_encode([
@@ -160,8 +160,8 @@ if ($path === '/health' && $method === 'GET') {
     exit;
 }
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 404
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 http_response_code(404);
 echo json_encode(['error' => 'Not found', 'path' => $path]);
