@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find s:/dev -iname *shoptet* -o -iname *addon* -o -iname *plugin*)",
+      "Bash(find s:/dev -iname manifest* -o -iname addon.json -o -iname package.json)",
+      "WebFetch(domain:developers.shoptet.com)",
+      "Bash(find s:/dev -type f \\\\\\(-name *.md -o -name *.txt -o -name *.json -o -name *.xml \\\\\\))",
+      "Bash(grep -r \"shoptet\\\\|Shoptet\" s:/dev --include=*.md --include=*.txt --include=*.json)",
+      "WebFetch(domain:api.docs.shoptet.com)",
+      "Bash(grep -r \"app_key\\\\|app_secret\\\\|oauth\\\\|endpoint\" s:/dev --include=*.php --include=*.json --include=*.js)",
+      "WebFetch(domain:github.com)",
+      "Bash(find /s/dev -iname *shoptet* -o -iname *addon* -o -iname *plugin*)",
+      "Bash(find /s/dev -type f \\\\\\(-name manifest* -o -name addon.json -o -name package.json \\\\\\))",
+      "Bash(grep -r \"shoptet\\\\|Shoptet\" /s/dev --include=*.md --include=*.txt --include=*.json)",
+      "Bash(find /s/dev/shoptet/custom-fonts -name .* -o -name *)",
+      "Bash(find /s/dev -type f -name *.md -o -name *.txt -o -name *.php)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(composer install:*)",
+      "Bash(/c/xampp/php/php.exe /c/composer/composer install --no-interaction)",
+      "Read(//c/xampp//**)",
+      "Read(//c/Users/j0ste/.config/herd/bin//**)",
+      "Bash(/c/Users/j0ste/.config/herd/bin/php --version)",
+      "Bash(cmd.exe /c \"cd s:\\\\dev\\\\shoptet\\\\custom-fonts && C:\\\\Users\\\\j0ste\\\\.config\\\\herd\\\\bin\\\\php84.bat C:\\\\composer\\\\composer install --no-interaction 2>&1\")",
+      "Bash(cmd.exe /c \"cd s:\\\\dev\\\\shoptet\\\\custom-fonts && C:\\\\Users\\\\j0ste\\\\.config\\\\herd\\\\bin\\\\php84.bat C:\\\\composer\\\\composer.phar install --no-interaction\")",
+      "Bash(cmd.exe /c \"C:\\\\Users\\\\j0ste\\\\.config\\\\herd\\\\bin\\\\php84.bat C:\\\\composer\\\\composer.phar install --no-interaction --working-dir=s:\\\\dev\\\\shoptet\\\\custom-fonts\")",
+      "Bash(cmd.exe /c \"C:\\\\Users\\\\j0ste\\\\.config\\\\herd\\\\bin\\\\php84.bat --version && echo PHP OK\")"
+    ]
+  }
+}

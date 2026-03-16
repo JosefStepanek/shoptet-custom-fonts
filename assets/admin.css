@@ -1,0 +1,254 @@
+/* Shoptet Custom Fonts – Admin UI */
+:root {
+  --color-primary:    #2563eb;
+  --color-primary-h:  #1d4ed8;
+  --color-success:    #16a34a;
+  --color-danger:     #dc2626;
+  --color-border:     #e2e8f0;
+  --color-bg:         #f8fafc;
+  --color-bg-card:    #ffffff;
+  --color-text:       #1e293b;
+  --color-muted:      #64748b;
+  --radius:           8px;
+  --shadow:           0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  padding: 24px;
+  line-height: 1.5;
+}
+
+/* ── Hlavička ─────────────────────────────────────── */
+.header {
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.header p {
+  color: var(--color-muted);
+  margin-top: 4px;
+  font-size: 13px;
+}
+.mock-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ── Karta ────────────────────────────────────────── */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* ── Hledání ──────────────────────────────────────── */
+.search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.search-row input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+}
+.search-row input:focus {
+  border-color: var(--color-primary);
+}
+
+/* ── Filter kategorie ─────────────────────────────── */
+.filter-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 99px;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--color-muted);
+  transition: all .15s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Seznam fontů ─────────────────────────────────── */
+.font-list {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.font-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-border);
+  transition: background .1s;
+  gap: 12px;
+}
+.font-item:last-child { border-bottom: none; }
+.font-item:hover      { background: #f1f5f9; }
+.font-item.selected   { background: #eff6ff; }
+
+.font-item input[type="radio"] {
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+  width: 16px; height: 16px;
+}
+.font-meta {
+  flex: 1;
+  min-width: 0;
+}
+.font-name {
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.font-category {
+  font-size: 11px;
+  color: var(--color-muted);
+  text-transform: capitalize;
+}
+.font-preview {
+  font-size: 18px;
+  color: var(--color-text);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.font-preview.loaded { opacity: 1; }
+
+.font-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+/* ── Náhled ───────────────────────────────────────── */
+.preview-section {
+  margin-top: 16px;
+}
+.preview-section label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 8px;
+}
+.preview-box {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  min-height: 80px;
+  transition: font-family .3s;
+}
+.preview-box h3 { font-size: 22px; margin-bottom: 6px; }
+.preview-box p  { font-size: 15px; color: var(--color-muted); }
+
+/* ── Akce ─────────────────────────────────────────── */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+.btn {
+  padding: 9px 20px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background .15s, opacity .15s;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) { background: var(--color-primary-h); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+.btn-ghost:hover:not(:disabled) { background: #f1f5f9; }
+
+/* ── Toast notifikace ─────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  transform: translateY(8px);
+  opacity: 0;
+  transition: all .25s;
+  z-index: 9999;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { background: var(--color-success); }
+.toast.error   { background: var(--color-danger); }
+
+/* ── Aktuální font banner ─────────────────────────── */
+.current-font-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.current-font-banner .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}

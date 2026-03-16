@@ -1,0 +1,12 @@
+vendor/
+.env
+tokens/*.json
+*.log
+
+# Uploaded fonts (pokud přibyde upload)
+public/fonts/*/
+
+# IDE
+.idea/
+.vscode/
+*.DS_Store

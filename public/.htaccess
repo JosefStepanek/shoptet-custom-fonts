@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Povol přímý přístup k existujícím souborům a adresářům
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Vše ostatní směruj do index.php
+RewriteRule ^ index.php [QSA,L]
