@@ -1,4 +1,5 @@
 RewriteEngine On
+RewriteBase /custom-fonts/
 
 # Block direct HTTP access to sensitive directories
 RewriteRule ^(src|templates|tokens|vendor)(/.*)?$ - [F,L]
