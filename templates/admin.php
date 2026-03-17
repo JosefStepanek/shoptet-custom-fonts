@@ -1,15 +1,19 @@
 <?php
-// Variables injected from public/index.php:
+// Variables injected from index.php:
 //   $projectId       string
-//   $currentSettings array  – see ShoptetApi::getCurrentSettings()
-//   $fontsJson       string  – JSON array of {name, category}
-//   $defaultHSizes   array   – ['h1'=>'2.25rem', ...]
+//   $currentSettings array  - see ShoptetApi::getCurrentSettings()
+//   $fontsJson       string  - JSON array of {name, category}
+//   $defaultHSizes   array   - ['h1'=>'36px', ...]
+//   $defaultMobSizes array   - ['h1'=>'27px', ...]
 //   $baseUrl         string
 //   $isMock          bool
 declare(strict_types=1);
 
 $body     = $currentSettings['body']     ?? [];
 $headings = $currentSettings['headings'] ?? [];
+
+$iconDesk = '<svg class="sz-icon" viewBox="0 0 16 14" width="15" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="1" width="14" height="9" rx="1.2"/><path d="M6 10l-1 3M10 10l1 3M5 13h6"/></svg>';
+$iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="1" width="8" height="14" rx="2"/><circle cx="5" cy="12.5" r=".9" fill="currentColor" stroke="none"/></svg>';
 ?>
 <!DOCTYPE html>
 <html lang="cs">
@@ -31,21 +35,21 @@ $headings = $currentSettings['headings'] ?? [];
   <p>Nastavte písmo pro tělo stránky a nadpisy. Uloží se přes Shoptet API jako CSS injekce.</p>
 </div>
 
-<!-- ── Body text section ───────────────────────────── -->
+<!-- Body text section -->
 <div class="card" id="section-body">
   <div class="section-title">
-    <span class="section-icon">¶</span> Tělo stránky
+    <span class="section-icon">P</span> Tělo stránky
   </div>
 
   <div class="field-row">
     <label class="field-label">Písmo</label>
     <div class="font-combobox" id="body-combobox">
       <div class="combobox-inner">
-        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo…"
+        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo..."
                autocomplete="off" spellcheck="false"
                value="<?= htmlspecialchars($body['family'] ?? '') ?>">
         <button type="button" class="combobox-clear" title="Odebrat"
-                style="<?= empty($body['family']) ? 'display:none' : '' ?>">✕</button>
+                style="<?= empty($body['family']) ? 'display:none' : '' ?>">x</button>
       </div>
       <div class="font-dropdown"></div>
     </div>
@@ -53,25 +57,32 @@ $headings = $currentSettings['headings'] ?? [];
 
   <div class="field-row two-col">
     <div>
-      <label class="field-label">Tloušťka (weight)</label>
+      <label class="field-label">Řez (weight)</label>
       <select class="field-select" id="body-weight">
         <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
-          <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> – <?= $label ?></option>
+          <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
         <?php endforeach; ?>
       </select>
     </div>
     <div>
       <label class="field-label">Velikost písma</label>
-      <input type="text" class="field-input" id="body-size"
-             placeholder="např. 16px, 1rem"
-             value="<?= htmlspecialchars($body['size'] ?? '') ?>">
+      <div class="size-pair-row">
+        <?= $iconDesk ?>
+        <input type="text" class="field-input size-input-narrow" id="body-size"
+               placeholder="16px"
+               value="<?= htmlspecialchars($body['size'] ?? '') ?>">
+        <?= $iconMob ?>
+        <input type="text" class="field-input size-input-narrow" id="body-mobile-size"
+               placeholder="14px"
+               value="<?= htmlspecialchars($body['mobileSize'] ?? '') ?>">
+      </div>
     </div>
   </div>
 
   <div class="field-row">
     <label class="field-label">
       Vlastní selektory
-      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
+      <span class="field-hint">carkou oddelene, bude pridano <code>!important</code></span>
     </label>
     <input type="text" class="field-input" id="body-selectors"
            placeholder=".product-name, #description, .custom-text"
@@ -87,7 +98,7 @@ $headings = $currentSettings['headings'] ?? [];
   </div>
 </div>
 
-<!-- ── Headings section ────────────────────────────── -->
+<!-- Headings section -->
 <div class="card" id="section-headings">
   <div class="section-title">
     <span class="section-icon">H</span> Nadpisy
@@ -97,11 +108,11 @@ $headings = $currentSettings['headings'] ?? [];
     <label class="field-label">Písmo</label>
     <div class="font-combobox" id="headings-combobox">
       <div class="combobox-inner">
-        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo…"
+        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo..."
                autocomplete="off" spellcheck="false"
                value="<?= htmlspecialchars($headings['family'] ?? '') ?>">
         <button type="button" class="combobox-clear" title="Odebrat"
-                style="<?= empty($headings['family']) ? 'display:none' : '' ?>">✕</button>
+                style="<?= empty($headings['family']) ? 'display:none' : '' ?>">x</button>
       </div>
       <div class="font-dropdown"></div>
     </div>
@@ -110,12 +121,12 @@ $headings = $currentSettings['headings'] ?? [];
   <div class="field-row two-col">
     <div>
       <label class="field-label">
-        Výchozí tloušťka
+        Výchozí řez
         <span class="field-hint">platí pro všechna H, pokud není přepsána níže</span>
       </label>
       <select class="field-select" id="headings-weight">
         <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
-          <option value="<?= $w ?>" <?= ($headings['weight'] ?? '700') == $w ? 'selected' : '' ?>><?= $w ?> – <?= $label ?></option>
+          <option value="<?= $w ?>" <?= ($headings['weight'] ?? '700') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
         <?php endforeach; ?>
       </select>
     </div>
@@ -125,7 +136,7 @@ $headings = $currentSettings['headings'] ?? [];
   <div class="field-row">
     <label class="field-label">
       Vlastní selektory
-      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
+      <span class="field-hint">carkou oddelene, bude pridano <code>!important</code></span>
     </label>
     <input type="text" class="field-input" id="headings-selectors"
            placeholder=".hero-title, .page-title"
@@ -134,37 +145,36 @@ $headings = $currentSettings['headings'] ?? [];
 
   <div class="field-row">
     <label class="field-label">
-      Velikost a tloušťka pro každý nadpis
+      Nastavení pro každý nadpis
       <span class="field-hint">přepíše výchozí hodnoty</span>
     </label>
     <?php
     $weightOptions = [100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',
                       500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'];
     foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
-      $sz      = $headings['sizes'][$tag]       ?? $defaultHSizes[$tag];
-      $msz     = $headings['mobileSizes'][$tag] ?? $defaultMobSizes[$tag];
-      $wt      = $headings['weights'][$tag]     ?? ($headings['weight'] ?? '700');
-      $color   = $headings['colors'][$tag]      ?? '';
-      $upper   = !empty($headings['textTransforms'][$tag]);
+      $sz    = $headings['sizes'][$tag]       ?? $defaultHSizes[$tag];
+      $msz   = $headings['mobileSizes'][$tag] ?? $defaultMobSizes[$tag];
+      $wt    = $headings['weights'][$tag]     ?? ($headings['weight'] ?? '700');
+      $color = $headings['colors'][$tag]      ?? '';
+      $upper = !empty($headings['textTransforms'][$tag]);
     ?>
       <div class="heading-row">
         <span class="heading-row-label"><?= strtoupper($tag) ?></span>
 
-        <div class="heading-row-field heading-row-field--sizes">
-          <div class="heading-size-pair">
-            <span class="heading-row-sublabel">Desk.</span>
-            <input type="text" class="heading-size-input"
-                   data-tag="<?= $tag ?>"
-                   placeholder="<?= $defaultHSizes[$tag] ?>"
-                   value="<?= htmlspecialchars($sz) ?>">
-          </div>
-          <div class="heading-size-pair">
-            <span class="heading-row-sublabel">Mob.</span>
-            <input type="text" class="heading-mobile-size-input"
-                   data-tag="<?= $tag ?>"
-                   placeholder="<?= $defaultMobSizes[$tag] ?>"
-                   value="<?= htmlspecialchars($msz) ?>">
-          </div>
+        <div class="heading-row-field heading-row-field--sz">
+          <?= $iconDesk ?>
+          <input type="text" class="heading-size-input"
+                 data-tag="<?= $tag ?>"
+                 placeholder="<?= $defaultHSizes[$tag] ?>"
+                 value="<?= htmlspecialchars($sz) ?>">
+        </div>
+
+        <div class="heading-row-field heading-row-field--sz">
+          <?= $iconMob ?>
+          <input type="text" class="heading-mobile-size-input"
+                 data-tag="<?= $tag ?>"
+                 placeholder="<?= $defaultMobSizes[$tag] ?>"
+                 value="<?= htmlspecialchars($msz) ?>">
         </div>
 
         <div class="heading-row-field">
@@ -199,13 +209,13 @@ $headings = $currentSettings['headings'] ?? [];
     <div class="preview-box" id="headings-preview">
       <?php foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
         $sz = $headings['sizes'][$tag] ?? $defaultHSizes[$tag]; ?>
-        <<?= $tag ?> style="font-size:<?= htmlspecialchars($sz) ?>;margin:0 0 4px"><?= strtoupper($tag) ?> – Ukázkový nadpis</<?= $tag ?>>
+        <<?= $tag ?> style="font-size:<?= htmlspecialchars($sz) ?>;margin:0 0 4px"><?= strtoupper($tag) ?> - Ukázkový nadpis</<?= $tag ?>>
       <?php endforeach; ?>
     </div>
   </div>
 </div>
 
-<!-- ── Actions ─────────────────────────────────────── -->
+<!-- Actions -->
 <div class="actions-bar">
   <button class="btn btn-primary" id="save-btn">Uložit nastavení</button>
   <button class="btn btn-ghost" id="clear-btn">Odebrat vše</button>

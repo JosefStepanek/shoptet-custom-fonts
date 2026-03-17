@@ -149,21 +149,25 @@ class ShoptetApi
 
         // Body CSS
         if ($bodyFamily) {
-            $b            = $settings['body'] ?? [];
-            $weight       = $b['weight'] ?? '400';
-            $size         = trim($b['size'] ?? '');
-            $extraSel     = $this->sanitizeSelectors($b['extraSelectors'] ?? '');
+            $b         = $settings['body'] ?? [];
+            $weight    = $b['weight'] ?? '400';
+            $size      = trim($b['size'] ?? '');
+            $mobSize   = trim($b['mobileSize'] ?? '');
+            $extraSel  = $this->sanitizeSelectors($b['extraSelectors'] ?? '');
 
             $baseSelectors = 'body,p,a,span,li,td,th,input,button,select,textarea,label';
             $selectors     = $extraSel ? "{$baseSelectors},{$extraSel}" : $baseSelectors;
 
-            $css  = "{$selectors}{font-family:'{$bodyFamily}',sans-serif!important;font-weight:{$weight}!important;";
+            $css = "{$selectors}{font-family:'{$bodyFamily}',sans-serif!important;font-weight:{$weight}!important;";
             if ($size !== '') {
                 $css .= "font-size:{$size}!important;";
             }
             $css .= '}';
-
             $parts[] = "<style>{$css}</style>";
+
+            if ($mobSize !== '') {
+                $parts[] = "<style>@media(max-width:767px){{$selectors}{font-size:{$mobSize}!important;}}</style>";
+            }
         }
 
         // Headings CSS

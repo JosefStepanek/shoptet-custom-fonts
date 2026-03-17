@@ -245,6 +245,7 @@
         family:         bodyCombobox.getValue() || '',
         weight:         document.getElementById('body-weight').value,
         size:           document.getElementById('body-size').value.trim(),
+        mobileSize:     document.getElementById('body-mobile-size').value.trim(),
         extraSelectors: document.getElementById('body-selectors').value.trim(),
       },
       headings: {
@@ -344,6 +345,11 @@
 
     if (body.family)     { bodyCombobox.setValue(body.family);         loadFont(body.family);     }
     if (headings.family) { headingsCombobox.setValue(headings.family); loadFont(headings.family); }
+
+    // Restore body mobile size
+    if (body.mobileSize) {
+      document.getElementById('body-mobile-size').value = body.mobileSize;
+    }
 
     // Initial previews
     applyBodyPreview(body.family, body.weight, body.size);
