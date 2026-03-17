@@ -91,7 +91,13 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="preview-section">
-    <label class="field-label">Náhled</label>
+    <div class="preview-header">
+      <label class="field-label">Náhled</label>
+      <div class="preview-toggle">
+        <button type="button" class="preview-toggle-btn is-active" data-preview="body" data-mode="desktop" title="Desktop"><?= $iconDesk ?></button>
+        <button type="button" class="preview-toggle-btn" data-preview="body" data-mode="mobile" title="Mobil"><?= $iconMob ?></button>
+      </div>
+    </div>
     <div class="preview-box" id="body-preview">
       <p>Toto je ukázkový text těla stránky. This is a sample body text.</p>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -137,7 +143,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   <div class="field-row">
     <label class="field-label">
       Vlastní selektory
-      <span class="field-hint">carkou oddelene, bude pridano <code>!important</code></span>
+      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
     </label>
     <input type="text" class="field-input" id="headings-selectors"
            placeholder=".hero-title, .page-title"
@@ -208,7 +214,13 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="preview-section">
-    <label class="field-label">Náhled</label>
+    <div class="preview-header">
+      <label class="field-label">Náhled</label>
+      <div class="preview-toggle">
+        <button type="button" class="preview-toggle-btn is-active" data-preview="headings" data-mode="desktop" title="Desktop"><?= $iconDesk ?></button>
+        <button type="button" class="preview-toggle-btn" data-preview="headings" data-mode="mobile" title="Mobil"><?= $iconMob ?></button>
+      </div>
+    </div>
     <div class="preview-box" id="headings-preview">
       <?php foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
         $sz = $headings['sizes'][$tag] ?? $defaultHSizes[$tag]; ?>

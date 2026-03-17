@@ -170,6 +170,37 @@
     }
   }
 
+  // -- Preview mode (desktop / mobile) ----------------------
+
+  const previewMode = { body: 'desktop', headings: 'desktop' };
+
+  function switchPreviewMode(preview, mode) {
+    previewMode[preview] = mode;
+
+    document.querySelectorAll(`.preview-toggle-btn[data-preview="${preview}"]`).forEach(btn =>
+      btn.classList.toggle('is-active', btn.dataset.mode === mode));
+
+    if (preview === 'body') {
+      const size = mode === 'mobile'
+        ? document.getElementById('body-mobile-size').value.trim()
+        : document.getElementById('body-size').value.trim();
+      applyBodyPreview(bodyCombobox.getValue(), document.getElementById('body-weight').value, size);
+    } else {
+      ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(tag => {
+        const sel = mode === 'mobile'
+          ? `.heading-mobile-size-input[data-tag="${tag}"]`
+          : `.heading-size-input[data-tag="${tag}"]`;
+        const inp     = document.querySelector(sel);
+        const fallback = mode === 'mobile' ? DEF_MOB_SIZES[tag] : DEF_SIZES[tag];
+        const box     = document.getElementById('headings-preview');
+        if (box) {
+          const el = box.querySelector(tag);
+          if (el) el.style.fontSize = (inp ? inp.value.trim() : '') || fallback || '';
+        }
+      });
+    }
+  }
+
   // -- Preview helpers ---------------------------------------
 
   function applyBodyPreview(family, weight, size) {
@@ -397,12 +428,15 @@
         document.getElementById('body-size').value.trim(),
       ));
 
-    document.getElementById('body-size').addEventListener('input', () =>
-      applyBodyPreview(
-        bodyCombobox.getValue(),
-        document.getElementById('body-weight').value,
-        document.getElementById('body-size').value.trim(),
-      ));
+    document.getElementById('body-size').addEventListener('input', () => {
+      if (previewMode.body === 'desktop') {
+        applyBodyPreview(
+          bodyCombobox.getValue(),
+          document.getElementById('body-weight').value,
+          document.getElementById('body-size').value.trim(),
+        );
+      }
+    });
 
     // Live preview - headings weight
     document.getElementById('headings-weight').addEventListener('change', () =>
@@ -411,13 +445,43 @@
         document.getElementById('headings-weight').value,
       ));
 
-    // Live preview - per-heading sizes
+    // Live preview - per-heading desktop sizes (only when in desktop mode)
     document.querySelectorAll('.heading-size-input').forEach(inp => {
-      inp.addEventListener('input', () =>
-        applyHeadingSizePreview(inp.dataset.tag, inp.value.trim()));
+      inp.addEventListener('input', () => {
+        if (previewMode.headings === 'desktop') {
+          applyHeadingSizePreview(inp.dataset.tag, inp.value.trim());
+        }
+      });
     });
 
-    // Mobile size inputs do not affect the desktop preview - no live preview needed
+    // Preview mode toggle buttons
+    document.querySelectorAll('.preview-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchPreviewMode(btn.dataset.preview, btn.dataset.mode));
+    });
+
+    // Live preview - body mobile size (only when in mobile mode)
+    document.getElementById('body-mobile-size').addEventListener('input', () => {
+      if (previewMode.body === 'mobile') {
+        applyBodyPreview(
+          bodyCombobox.getValue(),
+          document.getElementById('body-weight').value,
+          document.getElementById('body-mobile-size').value.trim(),
+        );
+      }
+    });
+
+    // Live preview - per-heading mobile sizes (only when in mobile mode)
+    document.querySelectorAll('.heading-mobile-size-input').forEach(inp => {
+      inp.addEventListener('input', () => {
+        if (previewMode.headings === 'mobile') {
+          const box = document.getElementById('headings-preview');
+          if (box) {
+            const el = box.querySelector(inp.dataset.tag);
+            if (el) el.style.fontSize = inp.value.trim() || DEF_MOB_SIZES[inp.dataset.tag] || '';
+          }
+        }
+      });
+    });
 
     // Live preview - per-heading weights
     document.querySelectorAll('.heading-weight-select').forEach(sel => {
