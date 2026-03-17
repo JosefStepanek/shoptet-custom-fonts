@@ -57,34 +57,33 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
     </div>
   </div>
 
-  <div class="field-row two-col">
-    <div>
-      <label class="field-label">Řez (weight)</label>
-      <select class="field-select" id="body-weight">
-        <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
-          <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <div>
-      <label class="field-label">Velikost písma</label>
-      <div class="size-pair-row">
-        <?= $iconDesk ?>
-        <input type="text" class="field-input size-input-narrow" id="body-size"
-               placeholder="16px"
-               value="<?= htmlspecialchars($body['size'] ?? '') ?>">
-        <?= $iconMob ?>
-        <input type="text" class="field-input size-input-narrow" id="body-mobile-size"
-               placeholder="14px"
-               value="<?= htmlspecialchars($body['mobileSize'] ?? '') ?>">
-      </div>
+  <div class="field-row">
+    <label class="field-label">Řez (weight)</label>
+    <select class="field-select" id="body-weight">
+      <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
+        <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+
+  <div class="field-row">
+    <label class="field-label">Velikost písma</label>
+    <div class="size-pair-row">
+      <?= $iconDesk ?>
+      <input type="text" class="size-input" id="body-size"
+             placeholder="16px"
+             value="<?= htmlspecialchars($body['size'] ?? '') ?>">
+      <?= $iconMob ?>
+      <input type="text" class="size-input" id="body-mobile-size"
+             placeholder="14px"
+             value="<?= htmlspecialchars($body['mobileSize'] ?? '') ?>">
     </div>
   </div>
 
   <div class="field-row">
     <label class="field-label">
       Vlastní selektory
-      <span class="field-hint">carkou oddelene, bude pridano <code>!important</code></span>
+      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
     </label>
     <input type="text" class="field-input" id="body-selectors"
            placeholder=".product-name, #description, .custom-text"

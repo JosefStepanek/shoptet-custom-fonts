@@ -46,7 +46,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
   margin-bottom: 16px;
 }
 @media (max-width: 860px) {
@@ -124,10 +124,18 @@ body {
   align-items: center;
   gap: 6px;
 }
-.size-input-narrow {
-  width: 80px;
-  flex: none !important;
+.size-input {
+  width: 72px;
+  padding: 7px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--color-text);
+  background: #fff;
+  outline: none;
+  transition: border-color .15s;
 }
+.size-input:focus { border-color: var(--color-primary); }
 
 .field-input,
 .field-select {
