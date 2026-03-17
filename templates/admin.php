@@ -20,7 +20,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Fonts</title>
+  <title>Shoptet doplněk - Custom Fonts</title>
   <link rel="stylesheet" href="<?= htmlspecialchars($baseUrl) ?>/assets/admin.css">
 </head>
 <body>
@@ -36,75 +36,6 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
 </div>
 
 <div class="cards-grid">
-
-<!-- Body text section -->
-<div class="card" id="section-body">
-  <div class="section-title">
-    <span class="section-icon">P</span> Tělo stránky
-  </div>
-
-  <div class="field-row">
-    <label class="field-label" for="body-font-input">Písmo</label>
-    <div class="font-combobox" id="body-combobox">
-      <div class="combobox-inner">
-        <input type="text" class="font-input" id="body-font-input"
-               placeholder="Hledat nebo vybrat písmo..."
-               autocomplete="off" spellcheck="false"
-               value="<?= htmlspecialchars($body['family'] ?? '') ?>">
-        <button type="button" class="combobox-clear" title="Odebrat"
-                style="<?= empty($body['family']) ? 'display:none' : '' ?>">x</button>
-      </div>
-      <div class="font-dropdown"></div>
-    </div>
-  </div>
-
-  <div class="field-row">
-    <label class="field-label" for="body-weight">Řez (weight)</label>
-    <select class="field-select" id="body-weight">
-      <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
-        <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
-      <?php endforeach; ?>
-    </select>
-  </div>
-
-  <div class="field-row">
-    <label class="field-label" for="body-size">Velikost písma</label>
-    <div class="size-pair-row">
-      <?= $iconDesk ?>
-      <input type="text" class="size-input" id="body-size"
-             placeholder="16px"
-             value="<?= htmlspecialchars($body['size'] ?? '') ?>">
-      <?= $iconMob ?>
-      <input type="text" class="size-input" id="body-mobile-size"
-             placeholder="14px"
-             value="<?= htmlspecialchars($body['mobileSize'] ?? '') ?>">
-    </div>
-  </div>
-
-  <div class="field-row">
-    <label class="field-label" for="body-selectors">
-      Vlastní selektory
-      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
-    </label>
-    <input type="text" class="field-input" id="body-selectors"
-           placeholder=".product-name, #description, .custom-text"
-           value="<?= htmlspecialchars($body['extraSelectors'] ?? '') ?>">
-  </div>
-
-  <div class="preview-section">
-    <div class="preview-header">
-      <label class="field-label">Náhled</label>
-      <div class="preview-toggle">
-        <button type="button" class="preview-toggle-btn is-active" data-preview="body" data-mode="desktop" title="Desktop"><?= $iconDesk ?></button>
-        <button type="button" class="preview-toggle-btn" data-preview="body" data-mode="mobile" title="Mobil"><?= $iconMob ?></button>
-      </div>
-    </div>
-    <div class="preview-box" id="body-preview">
-      <p>Toto je ukázkový text těla stránky. This is a sample body text.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-  </div>
-</div>
 
 <!-- Headings section -->
 <div class="card" id="section-headings" style="min-width:0">
@@ -230,6 +161,75 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
         $sz = $headings['sizes'][$tag] ?? $defaultHSizes[$tag]; ?>
         <<?= $tag ?> style="font-size:<?= htmlspecialchars($sz) ?>;margin:0 0 4px"><?= strtoupper($tag) ?> - Ukázkový nadpis</<?= $tag ?>>
       <?php endforeach; ?>
+    </div>
+  </div>
+</div>
+
+<!-- Body text section -->
+<div class="card" id="section-body" style="min-width:0">
+  <div class="section-title">
+    <span class="section-icon">P</span> Tělo stránky
+  </div>
+
+  <div class="field-row">
+    <label class="field-label" for="body-font-input">Písmo</label>
+    <div class="font-combobox" id="body-combobox">
+      <div class="combobox-inner">
+        <input type="text" class="font-input" id="body-font-input"
+               placeholder="Hledat nebo vybrat písmo..."
+               autocomplete="off" spellcheck="false"
+               value="<?= htmlspecialchars($body['family'] ?? '') ?>">
+        <button type="button" class="combobox-clear" title="Odebrat"
+                style="<?= empty($body['family']) ? 'display:none' : '' ?>">x</button>
+      </div>
+      <div class="font-dropdown"></div>
+    </div>
+  </div>
+
+  <div class="field-row">
+    <label class="field-label" for="body-weight">Řez (weight)</label>
+    <select class="field-select" id="body-weight">
+      <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
+        <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+
+  <div class="field-row">
+    <label class="field-label" for="body-size">Velikost písma</label>
+    <div class="size-pair-row">
+      <?= $iconDesk ?>
+      <input type="text" class="size-input" id="body-size"
+             placeholder="16px"
+             value="<?= htmlspecialchars($body['size'] ?? '') ?>">
+      <?= $iconMob ?>
+      <input type="text" class="size-input" id="body-mobile-size"
+             placeholder="14px"
+             value="<?= htmlspecialchars($body['mobileSize'] ?? '') ?>">
+    </div>
+  </div>
+
+  <div class="field-row">
+    <label class="field-label" for="body-selectors">
+      Vlastní selektory
+      <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
+    </label>
+    <input type="text" class="field-input" id="body-selectors"
+           placeholder=".product-name, #description, .custom-text"
+           value="<?= htmlspecialchars($body['extraSelectors'] ?? '') ?>">
+  </div>
+
+  <div class="preview-section">
+    <div class="preview-header">
+      <label class="field-label">Náhled</label>
+      <div class="preview-toggle">
+        <button type="button" class="preview-toggle-btn is-active" data-preview="body" data-mode="desktop" title="Desktop"><?= $iconDesk ?></button>
+        <button type="button" class="preview-toggle-btn" data-preview="body" data-mode="mobile" title="Mobil"><?= $iconMob ?></button>
+      </div>
+    </div>
+    <div class="preview-box" id="body-preview">
+      <p>Toto je ukázkový text těla stránky. This is a sample body text.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
   </div>
 </div>
