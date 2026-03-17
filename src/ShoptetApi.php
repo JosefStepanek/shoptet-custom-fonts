@@ -168,16 +168,22 @@ class ShoptetApi
             // Base rule: font-family + default weight for all headings
             $css = "{$selectors}{font-family:'{$headingFamily}',sans-serif!important;font-weight:{$globalWeight}!important;}";
 
-            // Per-heading overrides: size and/or weight
-            $sizes   = $h['sizes']   ?? [];
-            $weights = $h['weights'] ?? [];
+            // Per-heading overrides: size, weight, color, text-transform
+            $sizes          = $h['sizes']         ?? [];
+            $weights        = $h['weights']       ?? [];
+            $colors         = $h['colors']        ?? [];
+            $textTransforms = $h['textTransforms'] ?? [];
             foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
-                $sz = trim($sizes[$tag]   ?? '');
-                $wt = trim($weights[$tag] ?? '');
-                if ($sz !== '' || $wt !== '') {
+                $sz    = trim($sizes[$tag]   ?? '');
+                $wt    = trim($weights[$tag] ?? '');
+                $color = trim($colors[$tag]  ?? '');
+                $upper = !empty($textTransforms[$tag]);
+                if ($sz !== '' || $wt !== '' || $color !== '' || $upper) {
                     $props = '';
-                    if ($sz !== '') $props .= "font-size:{$sz}!important;";
-                    if ($wt !== '') $props .= "font-weight:{$wt}!important;";
+                    if ($sz !== '')  $props .= "font-size:{$sz}!important;";
+                    if ($wt !== '')  $props .= "font-weight:{$wt}!important;";
+                    if ($color !== '') $props .= "color:{$color}!important;";
+                    if ($upper)      $props .= "text-transform:uppercase!important;";
                     $css .= "{$tag},.{$tag}{{$props}}";
                 }
             }

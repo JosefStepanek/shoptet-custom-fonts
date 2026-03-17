@@ -141,8 +141,10 @@ $headings = $currentSettings['headings'] ?? [];
     $weightOptions = [100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',
                       500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'];
     foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
-      $sz = $headings['sizes'][$tag]   ?? $defaultHSizes[$tag];
-      $wt = $headings['weights'][$tag] ?? ($headings['weight'] ?? '700');
+      $sz      = $headings['sizes'][$tag]     ?? $defaultHSizes[$tag];
+      $wt      = $headings['weights'][$tag]   ?? ($headings['weight'] ?? '700');
+      $color   = $headings['colors'][$tag]    ?? '';
+      $upper   = !empty($headings['textTransforms'][$tag]);
     ?>
       <div class="heading-row">
         <span class="heading-row-label"><?= strtoupper($tag) ?></span>
@@ -162,6 +164,21 @@ $headings = $currentSettings['headings'] ?? [];
               <option value="<?= $w ?>" <?= $wt == $w ? 'selected' : '' ?>><?= $w ?></option>
             <?php endforeach; ?>
           </select>
+        </div>
+
+        <div class="heading-row-field heading-row-field--color">
+          <span class="heading-row-sublabel">Barva</span>
+          <input type="checkbox" class="heading-color-enable" data-tag="<?= $tag ?>"
+                 <?= $color !== '' ? 'checked' : '' ?>>
+          <input type="color" class="heading-color-input" data-tag="<?= $tag ?>"
+                 value="<?= htmlspecialchars($color ?: '#333333') ?>"
+                 <?= $color === '' ? 'disabled' : '' ?>>
+        </div>
+
+        <div class="heading-row-field heading-row-field--caps">
+          <span class="heading-row-sublabel">CAPS</span>
+          <input type="checkbox" class="heading-uppercase-check" data-tag="<?= $tag ?>"
+                 <?= $upper ? 'checked' : '' ?>>
         </div>
       </div>
     <?php endforeach; ?>

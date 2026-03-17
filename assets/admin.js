@@ -202,15 +202,38 @@
     if (el) el.style.fontWeight = weight || '';
   }
 
+  function applyHeadingColorPreview(tag, color) {
+    const box = document.getElementById('headings-preview');
+    if (!box) return;
+    const el = box.querySelector(tag);
+    if (el) el.style.color = color || '';
+  }
+
+  function applyHeadingUppercasePreview(tag, uppercase) {
+    const box = document.getElementById('headings-preview');
+    if (!box) return;
+    const el = box.querySelector(tag);
+    if (el) el.style.textTransform = uppercase ? 'uppercase' : '';
+  }
+
   // -- Collect current form values ---------------------------
 
   function collectSettings() {
-    const sizes = {}, weights = {};
+    const sizes = {}, weights = {}, colors = {}, textTransforms = {};
     document.querySelectorAll('.heading-size-input').forEach(inp => {
       sizes[inp.dataset.tag] = inp.value.trim();
     });
     document.querySelectorAll('.heading-weight-select').forEach(sel => {
       weights[sel.dataset.tag] = sel.value;
+    });
+    document.querySelectorAll('.heading-color-enable').forEach(chk => {
+      if (chk.checked) {
+        const colorInput = document.querySelector(`.heading-color-input[data-tag="${chk.dataset.tag}"]`);
+        colors[chk.dataset.tag] = colorInput ? colorInput.value : '';
+      }
+    });
+    document.querySelectorAll('.heading-uppercase-check').forEach(chk => {
+      textTransforms[chk.dataset.tag] = chk.checked;
     });
 
     return {
@@ -226,6 +249,8 @@
         extraSelectors: document.getElementById('headings-selectors').value.trim(),
         sizes,
         weights,
+        colors,
+        textTransforms,
       },
     };
   }
@@ -235,7 +260,7 @@
   async function onSave() {
     const btn = document.getElementById('save-btn');
     btn.disabled    = true;
-    btn.textContent = 'Saving...';
+    btn.textContent = 'Ukládání...';
 
     try {
       const res = await fetch(window.API_SAVE_URL, {
@@ -248,19 +273,19 @@
       });
 
       const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || 'Server error');
+      if (!res.ok || data.error) throw new Error(data.error || 'Chyba serveru');
 
-      showToast('Settings saved', 'success');
+      showToast('Nastavení uloženo', 'success');
     } catch (err) {
       showToast('Chyba: ' + err.message, 'error');
     } finally {
       btn.disabled    = false;
-      btn.textContent = 'Save settings';
+      btn.textContent = 'Uložit nastavení';
     }
   }
 
   async function onClear() {
-    if (!confirm('Remove all custom fonts and restore defaults?')) return;
+    if (!confirm('Odstranit všechny vlastní fonty a obnovit výchozí nastavení?')) return;
 
     bodyCombobox.setValue(null);
     headingsCombobox.setValue(null);
@@ -319,11 +344,24 @@
     applyBodyPreview(body.family, body.weight, body.size);
     applyHeadingsPreview(headings.family, headings.weight);
 
-    // Apply per-heading weights from saved settings
+    // Apply per-heading weights / colors / uppercase from saved settings
     if (headings.weights) {
       document.querySelectorAll('.heading-weight-select').forEach(sel => {
         const saved = headings.weights[sel.dataset.tag];
         if (saved) applyHeadingWeightPreview(sel.dataset.tag, saved);
+      });
+    }
+    if (headings.colors) {
+      document.querySelectorAll('.heading-color-enable').forEach(chk => {
+        const color = headings.colors[chk.dataset.tag];
+        if (color) applyHeadingColorPreview(chk.dataset.tag, color);
+      });
+    }
+    if (headings.textTransforms) {
+      document.querySelectorAll('.heading-uppercase-check').forEach(chk => {
+        if (headings.textTransforms[chk.dataset.tag]) {
+          applyHeadingUppercasePreview(chk.dataset.tag, true);
+        }
       });
     }
 
@@ -369,6 +407,25 @@
       document.querySelectorAll('.heading-weight-select').forEach(sel => {
         applyHeadingWeightPreview(sel.dataset.tag, sel.value || globalW);
       });
+    });
+
+    // Live preview - per-heading colors
+    document.querySelectorAll('.heading-color-enable').forEach(chk => {
+      const colorInput = document.querySelector(`.heading-color-input[data-tag="${chk.dataset.tag}"]`);
+      chk.addEventListener('change', () => {
+        colorInput.disabled = !chk.checked;
+        applyHeadingColorPreview(chk.dataset.tag, chk.checked ? colorInput.value : '');
+      });
+      if (colorInput) {
+        colorInput.addEventListener('input', () =>
+          applyHeadingColorPreview(chk.dataset.tag, colorInput.value));
+      }
+    });
+
+    // Live preview - per-heading uppercase
+    document.querySelectorAll('.heading-uppercase-check').forEach(chk => {
+      chk.addEventListener('change', () =>
+        applyHeadingUppercasePreview(chk.dataset.tag, chk.checked));
     });
 
     // Action buttons
