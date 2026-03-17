@@ -243,6 +243,17 @@ body {
   width: 44px;
 }
 
+.heading-row-field--sizes {
+  flex-direction: column;
+  gap: 3px;
+  align-items: stretch;
+}
+.heading-size-pair {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .heading-row-field--color {
   flex: 0 0 auto;
   gap: 4px;

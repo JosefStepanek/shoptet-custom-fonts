@@ -21,14 +21,24 @@ class ShoptetApi
     private const LOCATION       = 'common-header';
     private const CONFIG_MARKER  = 'shoptet-custom-fonts-config';
 
-    /** Default heading sizes applied when no explicit value is set. */
+    /** Default heading sizes (desktop) applied when no explicit value is set. */
     public const DEFAULT_HEADING_SIZES = [
-        'h1' => '2.25rem',
-        'h2' => '1.875rem',
-        'h3' => '1.5rem',
-        'h4' => '1.25rem',
-        'h5' => '1.125rem',
-        'h6' => '1rem',
+        'h1' => '36px',
+        'h2' => '30px',
+        'h3' => '24px',
+        'h4' => '20px',
+        'h5' => '18px',
+        'h6' => '16px',
+    ];
+
+    /** Default heading sizes for mobile (max-width: 767px) – approx. 3/4 of desktop. */
+    public const DEFAULT_HEADING_MOBILE_SIZES = [
+        'h1' => '27px',
+        'h2' => '22px',
+        'h3' => '18px',
+        'h4' => '15px',
+        'h5' => '14px',
+        'h6' => '12px',
     ];
 
     private string $projectId;
@@ -169,10 +179,12 @@ class ShoptetApi
             $css = "{$selectors}{font-family:'{$headingFamily}',sans-serif!important;font-weight:{$globalWeight}!important;}";
 
             // Per-heading overrides: size, weight, color, text-transform
-            $sizes          = $h['sizes']         ?? [];
-            $weights        = $h['weights']       ?? [];
-            $colors         = $h['colors']        ?? [];
+            $sizes          = $h['sizes']          ?? [];
+            $mobileSizes    = $h['mobileSizes']    ?? [];
+            $weights        = $h['weights']        ?? [];
+            $colors         = $h['colors']         ?? [];
             $textTransforms = $h['textTransforms'] ?? [];
+            $mobileCss      = '';
             foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
                 $sz    = trim($sizes[$tag]   ?? '');
                 $wt    = trim($weights[$tag] ?? '');
@@ -180,15 +192,24 @@ class ShoptetApi
                 $upper = !empty($textTransforms[$tag]);
                 if ($sz !== '' || $wt !== '' || $color !== '' || $upper) {
                     $props = '';
-                    if ($sz !== '')  $props .= "font-size:{$sz}!important;";
-                    if ($wt !== '')  $props .= "font-weight:{$wt}!important;";
+                    if ($sz !== '')    $props .= "font-size:{$sz}!important;";
+                    if ($wt !== '')    $props .= "font-weight:{$wt}!important;";
                     if ($color !== '') $props .= "color:{$color}!important;";
-                    if ($upper)      $props .= "text-transform:uppercase!important;";
+                    if ($upper)        $props .= "text-transform:uppercase!important;";
                     $css .= "{$tag},.{$tag}{{$props}}";
+                }
+
+                $msz = trim($mobileSizes[$tag] ?? '');
+                if ($msz !== '') {
+                    $mobileCss .= "{$tag},.{$tag}{font-size:{$msz}!important;}";
                 }
             }
 
             $parts[] = "<style>{$css}</style>";
+
+            if ($mobileCss !== '') {
+                $parts[] = "<style>@media(max-width:767px){{$mobileCss}}</style>";
+            }
         }
 
         // Encode full settings as a JSON comment for later retrieval

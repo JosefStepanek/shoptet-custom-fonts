@@ -4,9 +4,10 @@
 (function () {
   'use strict';
 
-  const FONTS      = window.FONTS_DATA       || [];
-  const SETTINGS   = window.CURRENT_SETTINGS || {};
-  const DEF_SIZES  = window.DEFAULT_H_SIZES  || {};
+  const FONTS          = window.FONTS_DATA          || [];
+  const SETTINGS       = window.CURRENT_SETTINGS    || {};
+  const DEF_SIZES      = window.DEFAULT_H_SIZES     || {};
+  const DEF_MOB_SIZES  = window.DEFAULT_H_MOB_SIZES || {};
 
   const loadedFonts = new Set();
 
@@ -219,9 +220,12 @@
   // -- Collect current form values ---------------------------
 
   function collectSettings() {
-    const sizes = {}, weights = {}, colors = {}, textTransforms = {};
+    const sizes = {}, mobileSizes = {}, weights = {}, colors = {}, textTransforms = {};
     document.querySelectorAll('.heading-size-input').forEach(inp => {
       sizes[inp.dataset.tag] = inp.value.trim();
+    });
+    document.querySelectorAll('.heading-mobile-size-input').forEach(inp => {
+      mobileSizes[inp.dataset.tag] = inp.value.trim();
     });
     document.querySelectorAll('.heading-weight-select').forEach(sel => {
       weights[sel.dataset.tag] = sel.value;
@@ -248,6 +252,7 @@
         weight:         document.getElementById('headings-weight').value,
         extraSelectors: document.getElementById('headings-selectors').value.trim(),
         sizes,
+        mobileSizes,
         weights,
         colors,
         textTransforms,
@@ -344,6 +349,19 @@
     applyBodyPreview(body.family, body.weight, body.size);
     applyHeadingsPreview(headings.family, headings.weight);
 
+    // Apply per-heading sizes / mobile sizes from saved settings
+    if (headings.sizes) {
+      document.querySelectorAll('.heading-size-input').forEach(inp => {
+        const saved = headings.sizes[inp.dataset.tag];
+        if (saved) applyHeadingSizePreview(inp.dataset.tag, saved);
+      });
+    }
+    if (headings.mobileSizes) {
+      document.querySelectorAll('.heading-mobile-size-input').forEach(inp => {
+        inp.value = headings.mobileSizes[inp.dataset.tag] || DEF_MOB_SIZES[inp.dataset.tag] || '';
+      });
+    }
+
     // Apply per-heading weights / colors / uppercase from saved settings
     if (headings.weights) {
       document.querySelectorAll('.heading-weight-select').forEach(sel => {
@@ -392,6 +410,8 @@
       inp.addEventListener('input', () =>
         applyHeadingSizePreview(inp.dataset.tag, inp.value.trim()));
     });
+
+    // Mobile size inputs do not affect the desktop preview - no live preview needed
 
     // Live preview - per-heading weights
     document.querySelectorAll('.heading-weight-select').forEach(sel => {

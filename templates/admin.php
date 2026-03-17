@@ -8,8 +8,9 @@
 //   $isMock          bool
 declare(strict_types=1);
 
-$body     = $currentSettings['body']     ?? [];
-$headings = $currentSettings['headings'] ?? [];
+$body            = $currentSettings['body']     ?? [];
+$headings        = $currentSettings['headings'] ?? [];
+$defaultMobSizes = ShoptetApi::DEFAULT_HEADING_MOBILE_SIZES;
 ?>
 <!DOCTYPE html>
 <html lang="cs">
@@ -141,20 +142,30 @@ $headings = $currentSettings['headings'] ?? [];
     $weightOptions = [100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',
                       500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'];
     foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
-      $sz      = $headings['sizes'][$tag]     ?? $defaultHSizes[$tag];
-      $wt      = $headings['weights'][$tag]   ?? ($headings['weight'] ?? '700');
-      $color   = $headings['colors'][$tag]    ?? '';
+      $sz      = $headings['sizes'][$tag]       ?? $defaultHSizes[$tag];
+      $msz     = $headings['mobileSizes'][$tag] ?? $defaultMobSizes[$tag];
+      $wt      = $headings['weights'][$tag]     ?? ($headings['weight'] ?? '700');
+      $color   = $headings['colors'][$tag]      ?? '';
       $upper   = !empty($headings['textTransforms'][$tag]);
     ?>
       <div class="heading-row">
         <span class="heading-row-label"><?= strtoupper($tag) ?></span>
 
-        <div class="heading-row-field">
-          <span class="heading-row-sublabel">Velikost</span>
-          <input type="text" class="heading-size-input"
-                 data-tag="<?= $tag ?>"
-                 placeholder="<?= $defaultHSizes[$tag] ?>"
-                 value="<?= htmlspecialchars($sz) ?>">
+        <div class="heading-row-field heading-row-field--sizes">
+          <div class="heading-size-pair">
+            <span class="heading-row-sublabel">Desk.</span>
+            <input type="text" class="heading-size-input"
+                   data-tag="<?= $tag ?>"
+                   placeholder="<?= $defaultHSizes[$tag] ?>"
+                   value="<?= htmlspecialchars($sz) ?>">
+          </div>
+          <div class="heading-size-pair">
+            <span class="heading-row-sublabel">Mob.</span>
+            <input type="text" class="heading-mobile-size-input"
+                   data-tag="<?= $tag ?>"
+                   placeholder="<?= $defaultMobSizes[$tag] ?>"
+                   value="<?= htmlspecialchars($msz) ?>">
+          </div>
         </div>
 
         <div class="heading-row-field">
@@ -204,11 +215,12 @@ $headings = $currentSettings['headings'] ?? [];
 <div class="toast" id="toast"></div>
 
 <script>
-  window.FONTS_DATA        = <?= $fontsJson ?>;
-  window.CURRENT_SETTINGS  = <?= json_encode($currentSettings, JSON_UNESCAPED_UNICODE) ?>;
-  window.DEFAULT_H_SIZES   = <?= json_encode($defaultHSizes) ?>;
-  window.PROJECT_ID        = <?= json_encode($projectId) ?>;
-  window.API_SAVE_URL      = <?= json_encode($baseUrl . '/api/save') ?>;
+  window.FONTS_DATA          = <?= $fontsJson ?>;
+  window.CURRENT_SETTINGS    = <?= json_encode($currentSettings, JSON_UNESCAPED_UNICODE) ?>;
+  window.DEFAULT_H_SIZES     = <?= json_encode($defaultHSizes) ?>;
+  window.DEFAULT_H_MOB_SIZES = <?= json_encode($defaultMobSizes) ?>;
+  window.PROJECT_ID          = <?= json_encode($projectId) ?>;
+  window.API_SAVE_URL        = <?= json_encode("{$baseUrl}/api/save") ?>;
 </script>
 <script src="<?= htmlspecialchars($baseUrl) ?>/assets/admin.js"></script>
 
