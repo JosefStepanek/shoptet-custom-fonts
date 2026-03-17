@@ -189,7 +189,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
           <div class="heading-row-field">
             <span class="heading-row-sublabel">Řez</span>
             <select class="heading-weight-select" data-tag="<?= $tag ?>">
-              <option value="" <?= $wt === '' ? 'selected' : '' ?>>Vychozi</option>
+              <option value="" <?= $wt === '' ? 'selected' : '' ?>>Výchozí</option>
               <?php foreach ($weightOptions as $w => $wLabel): ?>
                 <option value="<?= $w ?>" <?= (string)$wt === (string)$w ? 'selected' : '' ?>><?= $w ?></option>
               <?php endforeach; ?>
@@ -204,7 +204,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
                    <?= $color === '' ? 'disabled' : '' ?>>
           </div>
           <div class="heading-row-field heading-row-field--caps">
-            <span class="heading-row-sublabel">Caps</span>
+            <span class="heading-row-sublabel">Velká&nbsp;písmena</span>
             <input type="checkbox" class="heading-uppercase-check" data-tag="<?= $tag ?>"
                    <?= $upper ? 'checked' : '' ?>>
           </div>

@@ -288,6 +288,10 @@ body {
   width: 36px;
 }
 
+.heading-row-sublabel.wide {
+  width: 80px;
+}
+
 .heading-row-field--sz {
   flex: 0 0 auto;
   gap: 4px;
