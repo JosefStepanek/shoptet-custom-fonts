@@ -44,10 +44,11 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label">Písmo</label>
+    <label class="field-label" for="body-font-input">Písmo</label>
     <div class="font-combobox" id="body-combobox">
       <div class="combobox-inner">
-        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo..."
+        <input type="text" class="font-input" id="body-font-input"
+               placeholder="Hledat nebo vybrat písmo..."
                autocomplete="off" spellcheck="false"
                value="<?= htmlspecialchars($body['family'] ?? '') ?>">
         <button type="button" class="combobox-clear" title="Odebrat"
@@ -58,7 +59,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label">Řez (weight)</label>
+    <label class="field-label" for="body-weight">Řez (weight)</label>
     <select class="field-select" id="body-weight">
       <?php foreach ([100=>'Thin',200=>'Extra Light',300=>'Light',400=>'Regular',500=>'Medium',600=>'Semi Bold',700=>'Bold',800=>'Extra Bold',900=>'Black'] as $w=>$label): ?>
         <option value="<?= $w ?>" <?= ($body['weight'] ?? '400') == $w ? 'selected' : '' ?>><?= $w ?> - <?= $label ?></option>
@@ -67,7 +68,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label">Velikost písma</label>
+    <label class="field-label" for="body-size">Velikost písma</label>
     <div class="size-pair-row">
       <?= $iconDesk ?>
       <input type="text" class="size-input" id="body-size"
@@ -81,7 +82,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label">
+    <label class="field-label" for="body-selectors">
       Vlastní selektory
       <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
     </label>
@@ -112,10 +113,11 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label">Písmo</label>
+    <label class="field-label" for="headings-font-input">Písmo</label>
     <div class="font-combobox" id="headings-combobox">
       <div class="combobox-inner">
-        <input type="text" class="font-input" placeholder="Hledat nebo vybrat písmo..."
+        <input type="text" class="font-input" id="headings-font-input"
+               placeholder="Hledat nebo vybrat písmo..."
                autocomplete="off" spellcheck="false"
                value="<?= htmlspecialchars($headings['family'] ?? '') ?>">
         <button type="button" class="combobox-clear" title="Odebrat"
@@ -127,7 +129,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
 
   <div class="field-row two-col">
     <div>
-      <label class="field-label">
+      <label class="field-label" for="headings-weight">
         Výchozí řez
         <span class="field-hint">platí pro všechna H, pokud není přepsána níže</span>
       </label>
@@ -141,7 +143,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label">
+    <label class="field-label" for="headings-selectors">
       Vlastní selektory
       <span class="field-hint">čárkou oddělené, bude přidáno <code>!important</code></span>
     </label>
@@ -171,14 +173,14 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
         <div class="heading-row-sizes">
           <div class="heading-row-field heading-row-field--sz">
             <?= $iconDesk ?>
-            <input type="text" class="heading-size-input"
+            <input type="text" class="heading-size-input" id="heading-size-<?= $tag ?>"
                    data-tag="<?= $tag ?>"
                    placeholder="<?= $defaultHSizes[$tag] ?>"
                    value="<?= htmlspecialchars($sz) ?>">
           </div>
           <div class="heading-row-field heading-row-field--sz">
             <?= $iconMob ?>
-            <input type="text" class="heading-mobile-size-input"
+            <input type="text" class="heading-mobile-size-input" id="heading-mobile-size-<?= $tag ?>"
                    data-tag="<?= $tag ?>"
                    placeholder="<?= $defaultMobSizes[$tag] ?>"
                    value="<?= htmlspecialchars($msz) ?>">
@@ -187,8 +189,8 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
 
         <div class="heading-row-controls">
           <div class="heading-row-field">
-            <span class="heading-row-sublabel">Řez</span>
-            <select class="heading-weight-select" data-tag="<?= $tag ?>">
+            <label class="heading-row-sublabel" for="heading-weight-<?= $tag ?>">Řez</label>
+            <select class="heading-weight-select" id="heading-weight-<?= $tag ?>" data-tag="<?= $tag ?>">
               <option value="" <?= $wt === '' ? 'selected' : '' ?>>Výchozí</option>
               <?php foreach ($weightOptions as $w => $wLabel): ?>
                 <option value="<?= $w ?>" <?= (string)$wt === (string)$w ? 'selected' : '' ?>><?= $w ?></option>
@@ -196,17 +198,19 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
             </select>
           </div>
           <div class="heading-row-field heading-row-field--color">
-            <span class="heading-row-sublabel">Barva</span>
-            <input type="checkbox" class="heading-color-enable" data-tag="<?= $tag ?>"
+            <label class="heading-row-sublabel" for="heading-color-enable-<?= $tag ?>">Barva</label>
+            <input type="checkbox" class="heading-color-enable" id="heading-color-enable-<?= $tag ?>"
+                   data-tag="<?= $tag ?>"
                    <?= $color !== '' ? 'checked' : '' ?>>
             <input type="color" class="heading-color-input" data-tag="<?= $tag ?>"
                    value="<?= htmlspecialchars($color ?: '#333333') ?>"
                    <?= $color === '' ? 'disabled' : '' ?>>
           </div>
           <div class="heading-row-field heading-row-field--caps">
-            <span class="heading-row-sublabel">Velká&nbsp;písmena</span>
-            <input type="checkbox" class="heading-uppercase-check" data-tag="<?= $tag ?>"
+            <input type="checkbox" class="heading-uppercase-check" id="heading-caps-<?= $tag ?>"
+                   data-tag="<?= $tag ?>"
                    <?= $upper ? 'checked' : '' ?>>
+            <label class="heading-row-sublabel wide" for="heading-caps-<?= $tag ?>">Velká&nbsp;pís.</label>
           </div>
         </div>
       </div>
