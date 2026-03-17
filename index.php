@@ -82,6 +82,7 @@ if ($path === '/admin' && $method === 'GET') {
 
     $fontsJson        = GoogleFonts::getListJson();
     $defaultHSizes    = ShoptetApi::DEFAULT_HEADING_SIZES;
+    $defaultMobSizes  = ShoptetApi::DEFAULT_HEADING_MOBILE_SIZES;
     $baseUrl          = Config::baseUrl();
     $isMock           = Config::isMockMode();
 

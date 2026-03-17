@@ -8,9 +8,8 @@
 //   $isMock          bool
 declare(strict_types=1);
 
-$body            = $currentSettings['body']     ?? [];
-$headings        = $currentSettings['headings'] ?? [];
-$defaultMobSizes = ShoptetApi::DEFAULT_HEADING_MOBILE_SIZES;
+$body     = $currentSettings['body']     ?? [];
+$headings = $currentSettings['headings'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="cs">
