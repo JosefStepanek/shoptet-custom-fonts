@@ -203,12 +203,13 @@
 
   // -- Preview helpers ---------------------------------------
 
-  function applyBodyPreview(family, weight, size) {
+  function applyBodyPreview(family, weight, size, lineHeight) {
     const box = document.getElementById('body-preview');
     if (!box) return;
-    box.style.fontFamily = family ? `'${family}', sans-serif` : '';
-    box.style.fontWeight = weight || '';
-    box.style.fontSize   = size   || '';
+    box.style.fontFamily  = family ? `'${family}', sans-serif` : '';
+    box.style.fontWeight  = weight || '';
+    box.style.fontSize    = size   || '';
+    if (lineHeight !== undefined) box.style.lineHeight = lineHeight || '';
   }
 
   function applyHeadingsPreview(family, weight) {
@@ -277,6 +278,7 @@
         weight:         document.getElementById('body-weight').value,
         size:           document.getElementById('body-size').value.trim(),
         mobileSize:     document.getElementById('body-mobile-size').value.trim(),
+        lineHeight:     document.getElementById('body-line-height').value,
         extraSelectors: document.getElementById('body-selectors').value.trim(),
       },
       headings: {
@@ -382,8 +384,13 @@
       document.getElementById('body-mobile-size').value = body.mobileSize;
     }
 
+    // Restore body line-height
+    if (body.lineHeight) {
+      document.getElementById('body-line-height').value = body.lineHeight;
+    }
+
     // Initial previews
-    applyBodyPreview(body.family, body.weight, body.size);
+    applyBodyPreview(body.family, body.weight, body.size, body.lineHeight);
     applyHeadingsPreview(headings.family, headings.weight);
 
     // Apply per-heading sizes / mobile sizes from saved settings
@@ -420,13 +427,18 @@
       });
     }
 
-    // Live preview - body weight / size
+    // Live preview - body weight / size / line-height
     document.getElementById('body-weight').addEventListener('change', () =>
       applyBodyPreview(
         bodyCombobox.getValue(),
         document.getElementById('body-weight').value,
         document.getElementById('body-size').value.trim(),
       ));
+
+    document.getElementById('body-line-height').addEventListener('change', () => {
+      const box = document.getElementById('body-preview');
+      if (box) box.style.lineHeight = document.getElementById('body-line-height').value || '';
+    });
 
     document.getElementById('body-size').addEventListener('input', () => {
       if (previewMode.body === 'desktop') {

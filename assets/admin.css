@@ -112,6 +112,13 @@ body {
   color: var(--color-muted);
   font-size: 11px;
 }
+.field-hint a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.field-hint a:hover {
+  text-decoration: underline;
+}
 .field-hint code {
   background: #f1f5f9;
   padding: 1px 4px;

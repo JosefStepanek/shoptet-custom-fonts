@@ -153,6 +153,7 @@ class ShoptetApi
             $weight    = $b['weight'] ?? '400';
             $size      = trim($b['size'] ?? '');
             $mobSize   = trim($b['mobileSize'] ?? '');
+            $lineH     = trim($b['lineHeight'] ?? '');
             $extraSel  = $this->sanitizeSelectors($b['extraSelectors'] ?? '');
 
             $baseSelectors = 'body,p,a,span,li,td,th,input,button,select,textarea,label';
@@ -161,6 +162,9 @@ class ShoptetApi
             $css = "{$selectors}{font-family:'{$bodyFamily}',sans-serif!important;font-weight:{$weight}!important;";
             if ($size !== '') {
                 $css .= "font-size:{$size}!important;";
+            }
+            if ($lineH !== '') {
+                $css .= "line-height:{$lineH}!important;";
             }
             $css .= '}';
             $parts[] = "<style>{$css}</style>";

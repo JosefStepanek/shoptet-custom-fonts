@@ -44,7 +44,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label" for="headings-font-input">Písmo</label>
+    <label class="field-label" for="headings-font-input">Písmo <span class="field-hint">z <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></span></label>
     <div class="font-combobox" id="headings-combobox">
       <div class="combobox-inner">
         <input type="text" class="font-input" id="headings-font-input"
@@ -172,7 +172,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   </div>
 
   <div class="field-row">
-    <label class="field-label" for="body-font-input">Písmo</label>
+    <label class="field-label" for="body-font-input">Písmo <span class="field-hint">z <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></span></label>
     <div class="font-combobox" id="body-combobox">
       <div class="combobox-inner">
         <input type="text" class="font-input" id="body-font-input"
@@ -207,6 +207,16 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
              placeholder="14px"
              value="<?= htmlspecialchars($body['mobileSize'] ?? '') ?>">
     </div>
+  </div>
+
+  <div class="field-row">
+    <label class="field-label" for="body-line-height">Řádkování</label>
+    <select class="field-select" id="body-line-height" style="width:auto">
+      <option value="" <?= empty($body['lineHeight']) ? 'selected' : '' ?>>Výchozí</option>
+      <?php for ($lh = 1.0; $lh <= 1.9; $lh = round($lh + 0.1, 1)): ?>
+        <option value="<?= $lh ?>" <?= ($body['lineHeight'] ?? '') == (string)$lh ? 'selected' : '' ?>><?= number_format($lh, 1) ?></option>
+      <?php endfor; ?>
+    </select>
   </div>
 
   <div class="field-row">
