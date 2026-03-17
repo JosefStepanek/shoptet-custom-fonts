@@ -35,6 +35,8 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
   <p>Nastavte písmo pro tělo stránky a nadpisy. Uloží se přes Shoptet API jako CSS injekce.</p>
 </div>
 
+<div class="cards-grid">
+
 <!-- Body text section -->
 <div class="card" id="section-body">
   <div class="section-title">
@@ -99,7 +101,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
 </div>
 
 <!-- Headings section -->
-<div class="card" id="section-headings">
+<div class="card" id="section-headings" style="min-width:0">
   <div class="section-title">
     <span class="section-icon">H</span> Nadpisy
   </div>
@@ -161,44 +163,45 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
       <div class="heading-row">
         <span class="heading-row-label"><?= strtoupper($tag) ?></span>
 
-        <div class="heading-row-field heading-row-field--sz">
-          <?= $iconDesk ?>
-          <input type="text" class="heading-size-input"
-                 data-tag="<?= $tag ?>"
-                 placeholder="<?= $defaultHSizes[$tag] ?>"
-                 value="<?= htmlspecialchars($sz) ?>">
+        <div class="heading-row-sizes">
+          <div class="heading-row-field heading-row-field--sz">
+            <?= $iconDesk ?>
+            <input type="text" class="heading-size-input"
+                   data-tag="<?= $tag ?>"
+                   placeholder="<?= $defaultHSizes[$tag] ?>"
+                   value="<?= htmlspecialchars($sz) ?>">
+          </div>
+          <div class="heading-row-field heading-row-field--sz">
+            <?= $iconMob ?>
+            <input type="text" class="heading-mobile-size-input"
+                   data-tag="<?= $tag ?>"
+                   placeholder="<?= $defaultMobSizes[$tag] ?>"
+                   value="<?= htmlspecialchars($msz) ?>">
+          </div>
         </div>
 
-        <div class="heading-row-field heading-row-field--sz">
-          <?= $iconMob ?>
-          <input type="text" class="heading-mobile-size-input"
-                 data-tag="<?= $tag ?>"
-                 placeholder="<?= $defaultMobSizes[$tag] ?>"
-                 value="<?= htmlspecialchars($msz) ?>">
-        </div>
-
-        <div class="heading-row-field">
-          <span class="heading-row-sublabel">Weight</span>
-          <select class="heading-weight-select" data-tag="<?= $tag ?>">
-            <?php foreach ($weightOptions as $w => $wLabel): ?>
-              <option value="<?= $w ?>" <?= $wt == $w ? 'selected' : '' ?>><?= $w ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-
-        <div class="heading-row-field heading-row-field--color">
-          <span class="heading-row-sublabel">Barva</span>
-          <input type="checkbox" class="heading-color-enable" data-tag="<?= $tag ?>"
-                 <?= $color !== '' ? 'checked' : '' ?>>
-          <input type="color" class="heading-color-input" data-tag="<?= $tag ?>"
-                 value="<?= htmlspecialchars($color ?: '#333333') ?>"
-                 <?= $color === '' ? 'disabled' : '' ?>>
-        </div>
-
-        <div class="heading-row-field heading-row-field--caps">
-          <span class="heading-row-sublabel">CAPS</span>
-          <input type="checkbox" class="heading-uppercase-check" data-tag="<?= $tag ?>"
-                 <?= $upper ? 'checked' : '' ?>>
+        <div class="heading-row-controls">
+          <div class="heading-row-field">
+            <span class="heading-row-sublabel">Řez</span>
+            <select class="heading-weight-select" data-tag="<?= $tag ?>">
+              <?php foreach ($weightOptions as $w => $wLabel): ?>
+                <option value="<?= $w ?>" <?= $wt == $w ? 'selected' : '' ?>><?= $w ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="heading-row-field heading-row-field--color">
+            <span class="heading-row-sublabel">Barva</span>
+            <input type="checkbox" class="heading-color-enable" data-tag="<?= $tag ?>"
+                   <?= $color !== '' ? 'checked' : '' ?>>
+            <input type="color" class="heading-color-input" data-tag="<?= $tag ?>"
+                   value="<?= htmlspecialchars($color ?: '#333333') ?>"
+                   <?= $color === '' ? 'disabled' : '' ?>>
+          </div>
+          <div class="heading-row-field heading-row-field--caps">
+            <span class="heading-row-sublabel">Caps</span>
+            <input type="checkbox" class="heading-uppercase-check" data-tag="<?= $tag ?>"
+                   <?= $upper ? 'checked' : '' ?>>
+          </div>
         </div>
       </div>
     <?php endforeach; ?>
@@ -214,6 +217,8 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
     </div>
   </div>
 </div>
+
+</div><!-- /.cards-grid -->
 
 <!-- Actions -->
 <div class="actions-bar">

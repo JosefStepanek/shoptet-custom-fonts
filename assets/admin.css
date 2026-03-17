@@ -41,6 +41,18 @@ body {
   vertical-align: middle;
 }
 
+/* -- Cards grid ------------------------------------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+@media (max-width: 860px) {
+  .cards-grid { grid-template-columns: 1fr; }
+}
+
 /* -- Cards ------------------------------------------ */
 .card {
   background: var(--color-card);
@@ -48,7 +60,7 @@ body {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 20px;
-  margin-bottom: 16px;
+  min-width: 0;
 }
 
 .section-title {
@@ -224,7 +236,8 @@ body {
 .heading-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   padding: 6px 0;
   border-bottom: 1px solid var(--color-border);
 }
@@ -236,6 +249,20 @@ body {
   color: var(--color-muted);
   width: 26px;
   flex-shrink: 0;
+}
+
+.heading-row-sizes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heading-row-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 .heading-row-field {
@@ -250,7 +277,7 @@ body {
   font-size: 11px;
   color: var(--color-muted);
   flex-shrink: 0;
-  width: 44px;
+  width: 36px;
 }
 
 .heading-row-field--sz {
@@ -271,6 +298,18 @@ body {
 .heading-row-field--caps {
   flex: 0 0 auto;
   gap: 4px;
+}
+
+@media (max-width: 600px) {
+  .field-row.two-col { grid-template-columns: 1fr; }
+
+  .heading-row-sizes {
+    flex: 1;
+  }
+  .heading-row-controls {
+    flex-basis: 100%;
+    padding-left: 34px;
+  }
 }
 
 .heading-color-input {
