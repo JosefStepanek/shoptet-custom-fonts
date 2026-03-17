@@ -155,7 +155,7 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
     foreach (['h1','h2','h3','h4','h5','h6'] as $tag):
       $sz    = $headings['sizes'][$tag]       ?? $defaultHSizes[$tag];
       $msz   = $headings['mobileSizes'][$tag] ?? $defaultMobSizes[$tag];
-      $wt    = $headings['weights'][$tag]     ?? ($headings['weight'] ?? '700');
+      $wt    = $headings['weights'][$tag]     ?? '';
       $color = $headings['colors'][$tag]      ?? '';
       $upper = !empty($headings['textTransforms'][$tag]);
     ?>
@@ -183,8 +183,9 @@ $iconMob  = '<svg class="sz-icon" viewBox="0 0 10 16" width="10" height="15" fil
           <div class="heading-row-field">
             <span class="heading-row-sublabel">Řez</span>
             <select class="heading-weight-select" data-tag="<?= $tag ?>">
+              <option value="" <?= $wt === '' ? 'selected' : '' ?>>Vychozi</option>
               <?php foreach ($weightOptions as $w => $wLabel): ?>
-                <option value="<?= $w ?>" <?= $wt == $w ? 'selected' : '' ?>><?= $w ?></option>
+                <option value="<?= $w ?>" <?= (string)$wt === (string)$w ? 'selected' : '' ?>><?= $w ?></option>
               <?php endforeach; ?>
             </select>
           </div>
